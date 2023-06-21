@@ -8,6 +8,11 @@
 #include "PrintingManager.h"
 #include "CreatingManager.h"
 #include "HeaderTest.h"
+#include "HeaderRequests.h"
+#include "Globals.h"
+
+/*server*/
+#include "server_manager.h"
 
 int testingFirstName(void* value, PClient client);//First name check (specific)
 int testingLastName(void* value, PClient client);//Last name check (specific)

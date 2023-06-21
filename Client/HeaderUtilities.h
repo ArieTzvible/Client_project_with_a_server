@@ -23,7 +23,7 @@ char* getNewFileName(char* extension);//Requesting another file name
 
 
 /*Server&Client*/
-int getting_line(FILE* file, char* line);//getting a complete line from the file
+char* getting_line(FILE* file);//getting a complete line from the file
 char* get_new_file_Name(char* extension);//Requesting another file name
 
 

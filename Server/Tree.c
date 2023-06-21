@@ -85,7 +85,7 @@ PNode rotation(PNode root, int balance, void* val, int (*sort)(void*, PClient)) 
 		return NULL;
 
 	int isValBigger;
-	PNode temp = root;
+	
 	if (balance > 1) {
 		/*Checking whether the val is greater than the left pointer*/
 		isValBigger = sort(val, root->left->client);
@@ -162,7 +162,6 @@ void cellUpdateInTrees(PClient* newCell, PClient* currCell) {//Cell update
 }
 
 void takingOutCellAndInsertToTree(PClient client, int Enum, void* prevVal, void* currVal) {
-	PTree t = arrayTree[Enum];
 	PNode nodeCurr, temp;
 
 	nodeCurr = findingAClientByParameter(arrayTree[Enum]->root, prevVal, arrSortfunc[Enum]);

@@ -9,7 +9,7 @@ int isNum(char ch) {
 
 int isInt(char* num) {//Checking the correctness of the int in the string
 	if (!num) return 0;
-	size_t length = strlen(num);
+	int length = strlen(num);
 	for (int i = 0; i < length; i++)
 		if (!isNum(num[i]))
 			return 0;
@@ -18,7 +18,7 @@ int isInt(char* num) {//Checking the correctness of the int in the string
 
 int isFloat(char* num) {//Checking the correctness of the float in the string
 	if (!num) return 0;
-	size_t length = strlen(num);
+	int length = strlen(num);
 	for (int i = 0; i < length; i++)
 		if ((num[i] != '.') && (!isNum(num[i])))
 			return 0;

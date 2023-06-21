@@ -8,6 +8,6 @@
 
 extern int (*arrSortfunc[SIZE_ARRAY])(void* value, PClient client);
 extern PTree arrayTree[SIZE_ARRAY];
-extern sock;
+extern int sock;
 
 #endif

@@ -1,22 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <arpa/inet.h>
 
-void send_and_recv(int sock, char* buffer, int size_buffer);
+#include "client_manager.h"
 
-
-int main()
+void init_client()
 {
-    char *ip = "127.0.0.1";
-    int port = 5566;
-
-    int sock;
     struct sockaddr_in addr;
-    socklen_t addr_size;
-    char buffer[1024];
-    int n;
 
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0)
@@ -29,42 +16,66 @@ int main()
 
     memset(&addr, '\0', sizeof(addr));
     addr.sin_family = AF_INET;
-    addr.sin_port = port;
-    addr.sin_addr.s_addr = inet_addr(ip);
+    addr.sin_port = PORT;
+    addr.sin_addr.s_addr = inet_addr(IP);
 
-    connect(sock, (struct sockaddr*)&addr, sizeof(addr));
-    printf("Connected to the server.\n");
+    connect(sock, (struct sockaddr *)&addr, sizeof(addr));
+    printf("[+]Connected to the server.\n");
 
-    bzero(buffer, 1024);
-    strcpy(buffer, "HELLO, THIS IS CLIENT.");
-    send_and_recv(sock, buffer, strlen(buffer));
-    
-    while(strcmp(buffer, "quit"))
-    {
-        bzero(buffer, 1024);
-        scanf("%s", buffer);
-        printf("%s", buffer);
-        send_and_recv(sock, buffer, strlen(buffer));
-    }
+    send_("HELLO, THIS IS CLIENT.\n");
 
+    char buffer[50] = {0};
+    recv(sock, buffer, sizeof(buffer), 0);
+    printf("Server: %s\n", buffer);
 
-    bzero(buffer, 1024);
-    strcpy(buffer, "BYE BYE.");
-    send(sock, buffer, strlen(buffer), 0);
-
-    close(sock);
-    printf("Disconnected from the server.\n\n");
-
-    return 0;
 }
 
-void send_and_recv(int sock, char* buffer, int size_buffer)
+char *recv_()
 {
-    send(sock, buffer, size_buffer, 0);
-    printf("Client: %s\n", buffer);
-    bzero(buffer, size_buffer);
-    char this_buffer[1024] = {0};
-    recv(sock, this_buffer, sizeof(this_buffer), 0);
-    strcpy(buffer, this_buffer);
-    printf("Server: %s\n", buffer); 
+    char *buffer = NULL;
+    int buffer_size = 0;
+    int chunk_size;
+    char chunk[BUFFER_SIZE];
+
+    do
+    {
+        bzero(chunk, BUFFER_SIZE);
+        chunk_size = recv(sock, chunk, BUFFER_SIZE, 0);
+        if (chunk_size > 0)
+        {
+            buffer = (char *)realloc(buffer, buffer_size + chunk_size);
+            /* checking whether there is space in the memory*/
+            if (!buffer)
+            {
+                // Error printing when there is no space in memory
+                printf("Not enough memory\n");
+            }
+            strcat(buffer, chunk);
+            buffer_size += strlen(buffer);
+        }
+    } while (chunk_size == BUFFER_SIZE);
+
+    return buffer;
+}
+
+void send_(char *buffer)
+{
+    printf("send_ %s\n", buffer);
+    send(sock, buffer, strlen(buffer), 0);
+    printf("send_ DONE\n");
+}
+
+void print_from_recv()
+{
+    char *buffer = NULL;
+    do
+    {
+        if (buffer)
+            free(buffer);
+
+        buffer = recv_();
+        if(!strcmp(buffer, "0"))
+        printf("%s", buffer);
+    } while (!strcmp(buffer, "0"));
+    free(buffer);
 }

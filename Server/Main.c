@@ -141,7 +141,7 @@ int main()
 		}
 		else
 			printf("\tERROR! Probably characters other than letters appear in the request category;\n");//Error printing.
-	} while ((strcmp(selection, "l")) && (strcmp(selection, "quit")));//Loop exit conditions
+	} while ((strcmp(selection, "quit")));//Loop exit conditions
 	
 	deletingArrayOfTree();
 

@@ -48,7 +48,7 @@ void cellUpdateInLitst(PClient* newCell, PClient* temp) {//Cell update
 			(*temp)->phone = creatingADynamicCharWithContent((*newCell)->phone);//Getting a new string for the phone
 		}
 	}
-	deletingACellFromTheList(newCell);//cell release
+	deleting_a_cell_from_the_list(newCell);//cell release
 	*newCell = NULL;
 }
 
@@ -86,8 +86,11 @@ void isTheDataCorrect(PClient* client) {
 		(*client)->error.phone = 1;
 	if (((int)strlen((*client)->phone) == 9) && *(*client)->phone != '0') {//Checking if the phone is smaller than 10 because there is no 0 at the beginning
 		char* phone = (char*)malloc(11 * sizeof(char));//Declaration of a dynamic variable
-		if (!phone)//Checking if there is space in the memory
+		if (!phone){
+			//Checking if there is space in the memory
 			printf("Not enough memory\n");
+			send_("Not enough memory\n");
+		}
 		else {
 			strcpy(phone, "0");//Added 0 in the first place
 			strcat(phone, (*client)->phone);//Copy of the rest of the number

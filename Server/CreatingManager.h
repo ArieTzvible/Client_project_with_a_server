@@ -35,4 +35,9 @@ Date creatingANewDateStructure(char* date);//Create a new date
 void addToHeadTheList(PClient* head, PClient newCell);//add to the top of the list
 void addingASortedCustomerToTheList(PClient* head, PClient newCell);//Sorting and adding to the list
 
+/*Server&Client*/
+ListManager init_a_new_list_manager();//Creating a new manager structure
+void create_list_of_customers_from_a_client(ListManager manager);//creating a list from the file
+
+
 #endif

@@ -1,3 +1,56 @@
+#include "CreatingManager.h"
+
+ListManager init_a_new_list_manager()//Creating a new manager structure
+{
+	ListManager temp = (ListManager)malloc(sizeof(List));//creating a new structure
+
+	/*Error printing when there is no space in memory*/
+	if (temp == NULL){
+		printf("Not enough memory\n");
+		send_("Not enough memory\n");
+	}
+	else
+	{
+		temp->head = NULL;//statement to the top of the list
+		temp->headError = NULL;//statement to the top of the errors list 
+	}
+
+	return temp;//returning the structure
+}
+
+void create_list_of_customers_from_a_client(ListManager manager)//creating a list from the file
+{
+	char* temp_buffer = NULL;
+	do
+	{// checking whether the end of the file has been reached
+		if(temp_buffer)
+		{
+			printf("free(temp_buffer)\n");
+			free(temp_buffer);
+			temp_buffer = NULL;
+		}
+		temp_buffer = recv_();//send to get a line from the file
+printf("create_list_of_customers_from_a_client => while\n%s\n", temp_buffer);
+		if (temp_buffer != NULL && strcmp(temp_buffer, "0")) {
+printf("create_list_of_customers_from_a_client => if\n");
+			PClient temp = createNewClientFromFile(temp_buffer);// send to create a new cell
+printf("testingTheNewCell\n");
+			testingTheNewCell(manager, &temp);//Testing new cell
+			
+		}
+printf("send_(0)\n");
+		send_("0");
+printf("%s\n", temp_buffer);
+
+	} while (temp_buffer && (strcmp(temp_buffer, "0")));
+printf("if(temp_buffer)\n");
+	if(temp_buffer)
+		free(temp_buffer);
+printf("create_list_of_customers_from_a_client => DONE\n");
+}
+
+
+
 
 #include "CreatingManager.h"
 #include "HeaderMain.h"
@@ -46,24 +99,7 @@ PNode createNodeTree(PClient client) {
 	return node;
 }
 
-ListManager initANewListManager() //creating a manager structure
-{
-	ListManager temp = (ListManager)malloc(sizeof(List));//creating a new structure
 
-	if (temp == NULL){
-		//Error printing when there is no space in memory
-		printf("Not enough memory\n");
-		send_("Not enough memory\n");
-	}
-
-	else
-	{
-		temp->head = NULL;//statement to the top of the list
-		temp->headError = NULL;//statement to the top of the errors list 
-	}
-
-	return temp;//returning the structure
-}
 
 PClient initErrorsinAnewCell() //initialize a new client structure
 {
@@ -124,6 +160,7 @@ PClient createNewClientFromFile(char* line) {//creating a new customer from the 
 		free(line);
 		return NULL;
 	}
+printf("createNewClientFromFile => initErrorsinAnewCell\n");
 	PClient temp = initErrorsinAnewCell();//initialize a new client structure
 	void (*arr[6])(PClient curr, char* string) = {
 		fillingInAFirstName, fillingInALastName, fillingInAID,
@@ -145,7 +182,9 @@ PClient createNewClientFromFile(char* line) {//creating a new customer from the 
 	if ((!temp->date.day) && (!temp->date.month) && (!temp->date.year))
 		temp->error.lacksValues = temp->error.ERROR = 1;//Missing values
 
-	free(line);
+	//free(line);
+	
+printf("createNewClientFromFile => DONE\n");
 	return temp;
 }
 
@@ -180,16 +219,7 @@ Date creatingANewDateStructure(char* date) {//create date
 	return temp;//Return new cell
 }
 
-void creatingListOfClientsFromAFile(ListManager manager, FILE* file) {//creating a list from the file
-	char* tempLine;
-	while (!(feof(file))) {// checking whether the end of the file has been reached
-		tempLine = GettingLine(file);//send to get a line from the file
-		if (tempLine != NULL && *tempLine != '\n') {
-			PClient temp = createNewClientFromFile(tempLine);// send to create a new cell
-			testingTheNewCell(manager, &temp);//Testing new cell
-		}
-	}
-}
+
 
 void creatingTreesFromLinkedList(ListManager manager) {
 
@@ -298,7 +328,6 @@ void fillingInADate(PClient curr, char* string) {
 
 /*Finding the place to insert the tree*/
 PNode incomeForTheTree(PNode root, PClient client, void* value, int (*sort)(void*, PClient)) {
-
 	int test;/*Create a variable for the test result*/
 
 	/*Check if the client is empty*/

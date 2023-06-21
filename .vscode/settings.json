@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "headerutilities.h": "c",
+        "headerrequests.h": "c",
+        "globals.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}

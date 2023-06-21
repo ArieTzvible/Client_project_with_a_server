@@ -2,7 +2,7 @@
 
 
 /*Sending a line from the file to the server*/
-int getting_line(FILE* file, char* line) {//getting a complete line from the file
+char* getting_line(FILE* file) {//getting a complete line from the file
 	char* input = NULL;//statement about a pointer to a row that the user entered
 	char string[1024];//Declaration of a variable
 	fgets(string, 1024, file);//Getting a string from the file
@@ -46,6 +46,5 @@ int getting_line(FILE* file, char* line) {//getting a complete line from the fil
 			input[strlen(input)] = '\0'; // set the last place to \0
 		}
 	}
-    line = input;
-	return strlen(input);
+    return input;
 }
