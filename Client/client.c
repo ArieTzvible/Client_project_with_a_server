@@ -30,7 +30,7 @@ void init_client()
 
 }
 
-char *recv_()
+char* recv_()
 {
     char *buffer = NULL;
     int buffer_size = 0;
@@ -43,15 +43,21 @@ char *recv_()
         chunk_size = recv(sock, chunk, BUFFER_SIZE, 0);
         if (chunk_size > 0)
         {
-            buffer = (char *)realloc(buffer, buffer_size + chunk_size);
+            if(buffer_size)
+            {
+                buffer = (char *)realloc(buffer, (buffer_size + chunk_size) * sizeof(char));
+                strcat(buffer, chunk);
+            }
+            else
+                buffer = strdup(chunk);
+                // buffer = (char *)calloc(chunk_size, sizeof(char));
             /* checking whether there is space in the memory*/
             if (!buffer)
             {
                 // Error printing when there is no space in memory
                 printf("Not enough memory\n");
             }
-            strcat(buffer, chunk);
-            buffer_size += strlen(buffer);
+            buffer_size = strlen(buffer);
         }
     } while (chunk_size == BUFFER_SIZE);
 
@@ -60,9 +66,7 @@ char *recv_()
 
 void send_(char *buffer)
 {
-    printf("send_ %s\n", buffer);
     send(sock, buffer, strlen(buffer), 0);
-    printf("send_ DONE\n");
 }
 
 void print_from_recv()
@@ -71,11 +75,47 @@ void print_from_recv()
     do
     {
         if (buffer)
+        {
             free(buffer);
+            buffer = NULL;
+        }
 
         buffer = recv_();
         if(!strcmp(buffer, "0"))
         printf("%s", buffer);
     } while (!strcmp(buffer, "0"));
     free(buffer);
+    buffer = NULL;
+}
+
+//todo ****************************************
+
+void print_send(char* buffer)
+{
+    send_(buffer);
+    char* trash = recv_();
+    free(trash);
+}
+
+void print_recv()
+{
+    char* buffer = recv_();
+	printf("%s\n", buffer);
+	free(buffer);
+	buffer = NULL;
+	send_("0");
+}
+
+char* get_recv()
+{
+    char* buffer = recv_();
+	send_("0");
+    return buffer;
+}
+
+void send_server(char* buffer)
+{
+    send_(buffer);
+    char* trash = recv_();
+    free(trash);
 }

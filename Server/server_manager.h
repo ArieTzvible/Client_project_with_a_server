@@ -14,9 +14,16 @@ char* recv_();
 
 void send_(char* buffer);
 
-void send_format(const char* format, ...);
+void creating_a_string_with_variables(char** buffer, const char* format, ...);
 
-// void print_from_recv();
+
+
+
+//todo ***************************************************************
+void print_send(char* buffer);
+void send_client(char* buffer);
+void print_recv();
+char* get_recv();
 
 
 #endif

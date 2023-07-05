@@ -60,7 +60,7 @@ int main()
 	/**************************/
 
 	/*Open file*/
-	char str_user[7] = {0};			  // Create a variable to receive the user's selection.
+	// char str_user[7] = {0};			  // Create a variable to receive the user's selection.
 	int file_name_dynamic = 0;		  // Creating a variable to test whether the pointer to the file is dynamic.
 	char *line = NULL;				  // Create a pointer to receive the user's selection.
 	char *file_name = {0};			  // Create a pointer to get the file name
@@ -85,40 +85,35 @@ int main()
 printf("fclose(debt_file)\n");
 	fclose(debt_file); // Closing a folder.
 
-	do
-	{
-printf("while menu\n");
-		if (buffer)
-			free(buffer);
-printf("buffer = recv_()\n");
-		buffer = recv_();
-		printf("%s", buffer);
-	} while (strcmp(buffer, "0"));
 
-	if (buffer)
-		free(buffer);
+printf("\nprint:\n");
+	print_recv();
 
-	buffer = recv_();
-	free(buffer);
+printf("error\n");
+	// print_recv();
+
+
+printf("menu\n");
+	// print_recv();
+
 
 	do
 	{
 printf("while choice\n");
-		buffer = recv_();
-		free(buffer);
+		print_recv();
 
-		scanf("%s", str_user);
-		send_(str_user);
-
+		// scanf("%s", str_user);
+		// send_server(str_user);
+		// // if()
 		line = GettingLine(stdin);
-		send_(line);
+		send_server(line);
+		
 		if (buffer)
 			free(buffer);
-		buffer = recv_();
+		buffer = get_recv();
 
 		if (!strcmp(buffer, "OPEN_FILE"))
 		{
-			free(buffer);
 			while (!(debt_file = fopen(file_name, "a")))
 			{
 				if (file_name_dynamic)
@@ -126,19 +121,26 @@ printf("while choice\n");
 				file_name = getNewFileName(FILE_NAME_EXTENSION);
 				file_name_dynamic = 1; // Checking whether we received a dynamic string
 			}
-			buffer = recv_();
+			free(buffer);
+			send_server("[+]THE FILE IS OPEN\n");
+			buffer = get_recv();
 			fprintf(debt_file, "%s", buffer);
 			fclose(debt_file); // close file.
+			free(buffer);
+			buffer = NULL;
+			buffer = get_recv();
 		}
 		if (!strcmp(buffer, "PRINT"))
 		{
-			print_from_recv();
+			print_recv();
 		}
 
-		free(buffer);
-		buffer = NULL;
-	} while ((strcmp(str_user, "quit")));
-
+printf("buffer: %s\n", buffer);
+	} while ((strcmp(buffer, "quit")));
+	buffer = recv_();
+	printf("SERVER: %s", buffer);
+	free(buffer);
+	buffer = NULL;
 	close(sock);
 	printf("Disconnected from the server.\n\n");
 
@@ -148,122 +150,3 @@ printf("while choice\n");
 
 	return 0;
 }
-
-// TODO ********************************************************
-// TODO ********************************************************
-// TODO ********************************************************
-// TODO ********************************************************
-// TODO ********************************************************
-// TODO ********************************************************
-// TODO ********************************************************
-
-// int main_()
-// {
-// 	// _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);//Memory release test
-
-// 	// crateArrayTreeAndArrayFuncSort();//Sending to create an array of sorting functions
-
-// 	char strUse[7] = {0};								   // Create a variable to receive the user's selection.
-// 	int file_name_dynamic = 0;							   // Creating a variable to test whether the pointer to the file is dynamic.
-// 	char *selection = {0};								   // Create a pointer to receive the user's selection.
-// 	char *fileName = {0};								   // Create a pointer to get the file name
-// 	char *tempFileName = FILE_NAME;						   // Declaration of a variable containing the file name.
-// 	ListManager managerClientList = initANewListManager(); // Creating a new manageme structure.
-// 	FILE *debtFile;										   // Create a pointer to the file.
-
-// 	fileName = tempFileName; // Getting the filename for the pointer
-
-// 	while (!(debtFile = fopen(fileName, "r")))
-// 	{ // Opening for reading only.
-// 		if (file_name_dynamic)
-// 			free(fileName);
-// 		// Sending to the function of receiving a name from the user (it is not necessary to insert CSV).
-// 		fileName = getNewFileName(FILE_NAME_EXTENSION);
-// 		file_name_dynamic = 1; // Checking whether we received a dynamic string
-// 	}
-
-// 	creatingListOfClientsFromAFile(managerClientList, debtFile); // Building a list from a file.
-
-// 	fclose(debtFile); // Closing a folder.
-
-// 	creatingTreesFromLinkedList(managerClientList);
-
-// 	printingDebtorsOnly(managerClientList->head);		   // Debtors printing.
-// 	printingCellsWithErrors(managerClientList->headError); // Printing the cells with errors
-
-// 	printInstructions(); // Printing of instructions.
-
-// 	do
-// 	{
-// 		printf("\n\n\t--> ");
-// 		while (!scanf("%s", strUse))
-// 		{ // Receive request from user
-// 			printf("\n\n\t--> ");
-// 		}
-// 		selection = strUse; // Getting the string into a pointer.
-// 		if (isTheStringCorrect(selection))
-// 		{											 // Checking the correctness of the letters and changing uppercase letters to lowercase.
-// 			if (!(strcmp(selection, "select")))		 // Checks if he asked to sort
-// 				sortingByRequest(managerClientList); // Sending to a sort function
-// 			else if (!(strcmp(selection, "set")))
-// 			{ // Checking whether he asked to add a new customer
-// 				while (!(debtFile = fopen(fileName, "a")))
-// 				{ // Opening the file for writing.
-// 					// Sending to the function of receiving a name from the user (it is not necessary to insert CSV).
-// 					if (file_name_dynamic)
-// 						free(fileName);
-// 					fileName = getNewFileName(FILE_NAME_EXTENSION);
-// 					file_name_dynamic; // Checking whether we received a dynamic string
-// 				}
-// 				addingClientFromUser(&managerClientList, debtFile); // Sending to the function of adding a new client.
-// 				fclose(debtFile);									// close file.
-// 			}
-// 			else if (!(strcmp(selection, "print")))								// Checking whether printing was requested.
-// 				printingDebtorsOnly(managerClientList->head);					// Debtors printing.
-// 			else if (!(strcmp(selection, "error")))								// Checking whether printing was errors.
-// 				printingCellsWithErrors(managerClientList->headError);			// Printing the cells with errors
-// 			else if ((strcmp(selection, "quit")))								// A test that does not want to leave the program.
-// 				printf("\tERROR! The category you requested was not found;\n"); // Error printing.
-// 		}
-// 		else
-// 			printf("\tERROR! Probably characters other than letters appear in the request category;\n"); // Error printing.
-// 	} while ((strcmp(selection, "quit")));																 // Loop exit conditions
-
-// 	deletingArrayOfTree();
-
-// 	deletingTheEntireList(managerClientList); // Deleting the list.
-// 	if (file_name_dynamic)					  // Checking if the string is dynamic.
-// 		free(fileName);						  // Release the string.
-// 	printf("\n\tBye Bye!!\n");
-
-// 	return 0;
-// }
-
-// int testingFirstName(void *value, PClient client)
-// {													 // First name check (specific)
-// 	return strcmp((char *)value, client->firstName); // Comparison of the strings
-// }
-// int testingLastName(void *value, PClient client)
-// {													// Last name check (specific)
-// 	return strcmp((char *)value, client->lastName); // Comparison of the strings
-// }
-// int testingID(void *value, PClient client)
-// {											  // ID check (specific)
-// 	return strcmp((char *)value, client->id); // Comparison of the strings
-// }
-// int testingPhone(void *value, PClient client)
-// {												 // Phone check (specific)
-// 	return strcmp((char *)value, client->phone); // Comparison of the strings
-// }
-// int testingDebt(void *value, PClient client)
-// { // Debt check (specific)
-// 	if (*(float *)value < client->debt)
-// 		return -1;
-// 	if (*(float *)value > client->debt)
-// 		return 1;
-// 	return 0;
-// }
-// int testingDate(void *value, PClient client)
-// {														 // Date check (specific)
-// 	return comparingDates(*(Date *)value, client->date); // Debt comparison
-// }

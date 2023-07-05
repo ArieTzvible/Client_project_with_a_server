@@ -5,6 +5,9 @@
 #define CreatingManager
 
 #include "HeaderTest.h"
+#include "HeaderMain.h"
+#include "HeaderTree.h"
+#include "Globals.h"
 
 void crateArrayTreeAndArrayFuncSort();
 
@@ -38,6 +41,8 @@ void addingASortedCustomerToTheList(PClient* head, PClient newCell);//Sorting an
 /*Server&Client*/
 ListManager init_a_new_list_manager();//Creating a new manager structure
 void create_list_of_customers_from_a_client(ListManager manager);//creating a list from the file
+/*Creating a string of unknown length with the same character*/
+void create_string(char* buffer, const char* format, ...);
 
 
 #endif

@@ -17,4 +17,10 @@ void send_(char* buffer);
 
 void print_from_recv();
 
+//todo *****************************
+void print_send(char* buffer);
+void send_server(char* buffer);
+void print_recv();
+char* get_recv();
+
 #endif

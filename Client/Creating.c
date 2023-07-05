@@ -115,6 +115,7 @@ PClient creatingADeepCopyOfAClient(PClient curr) {
 PClient createNewClientFromFile(char* line) {//creating a new customer from the file
 	if (!*line) {
 		free(line);
+		line = NULL;
 		return NULL;
 	}
 	PClient temp = initErrorsinAnewCell();//initialize a new client structure
@@ -139,6 +140,7 @@ PClient createNewClientFromFile(char* line) {//creating a new customer from the 
 		temp->error.lacksValues = temp->error.ERROR = 1;//Missing values
 
 	free(line);
+	line = NULL;
 	return temp;
 }
 
@@ -280,6 +282,7 @@ void fillingInADebt(PClient curr, char* string) {
 	else
 		curr->error.ERROR = curr->error.debt = 1;//error in receiving the debt
 	free(strDebt);
+	strDebt = NULL;
 }
 void fillingInADate(PClient curr, char* string) {
 	if ((!curr) || (!string)) return;

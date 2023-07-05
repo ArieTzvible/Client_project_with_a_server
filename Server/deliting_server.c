@@ -32,9 +32,9 @@ void deleting_the_entire_list(ListManager manager) {//deleting the whole list
 	free(manager);//Releasing the manager structure
 }
 
-void error_printing_and_deleting_a_cell(PClient* cell, char* str) {//printing an error and deleting a cell
+void error_printing_and_deleting_a_cell(PClient* cell, char* str, char** buffer) {//printing an error and deleting a cell
 	printf("%s", str);//printing an error
-	send_format("%s", str);//printing an error
+	creating_a_string_with_variables(buffer, str);
 	deleting_a_cell_from_the_list(cell);//deleting a cell
 }
 

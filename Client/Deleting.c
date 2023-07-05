@@ -3,49 +3,70 @@
 #include "HeaderTree.h"
 #include "Globals.h"
 
-void deletingACellFromTheList(PClient* currentCell) {//deleting a cell from the list
-	if (*currentCell) {
+void deletingACellFromTheList(PClient *currentCell)
+{ // deleting a cell from the list
+	if (*currentCell)
+	{
 		if ((*currentCell)->firstName)
-			free((*currentCell)->firstName);//Releasing a first name string
+		{
+			free((*currentCell)->firstName); // Releasing a first name string
+			(*currentCell)->firstName = NULL;
+		}
 		if ((*currentCell)->lastName)
-			free((*currentCell)->lastName);//Releasing last name string
+		{
+			free((*currentCell)->lastName); // Releasing last name string
+			(*currentCell)->lastName = NULL;
+		}
 		if ((*currentCell)->id)
-			free((*currentCell)->id);//Releasing an ID string
+		{
+			free((*currentCell)->id); // Releasing an ID string
+			(*currentCell)->id = NULL;
+		}
 		if ((*currentCell)->phone)
-			free((*currentCell)->phone);//Releasing a phone string
-		free(*currentCell);//release current cell
+		{
+			free((*currentCell)->phone); // Releasing a phone string
+			(*currentCell)->phone = NULL;
+		}
+		free(*currentCell); // release current cell
 		*currentCell = NULL;
 	}
 }
 
-void deletingTheEntireList(ListManager manager) {//deleting the whole list
-	while (manager->head) {//Checking the list is not empty
+void deletingTheEntireList(ListManager manager)
+{ // deleting the whole list
+	while (manager->head)
+	{ // Checking the list is not empty
 		PClient temp = manager->head;
-		manager->head = manager->head->next;//Move the pointer to the next cell
-		deletingACellFromTheList(&temp);//cell release
+		manager->head = manager->head->next; // Move the pointer to the next cell
+		deletingACellFromTheList(&temp);	 // cell release
 	}
-	while (manager->headError) {//Checking the list is not empty
+	while (manager->headError)
+	{ // Checking the list is not empty
 		PClient temp = manager->headError;
-		manager->headError = manager->headError->next;//Move the pointer to the next cell
-		deletingACellFromTheList(&temp);//cell release
+		manager->headError = manager->headError->next; // Move the pointer to the next cell
+		deletingACellFromTheList(&temp);			   // cell release
 	}
-	free(manager);//Releasing the manager structure
+	free(manager); // Releasing the manager structure
 }
 
-void errorPrintingandDeletingACell(PClient* cell, char* str) {//printing an error and deleting a cell
-	printf("%s", str);//printing an error
-	deletingACellFromTheList(cell);//deleting a cell
+void errorPrintingandDeletingACell(PClient *cell, char *str)
+{									// printing an error and deleting a cell
+	printf("%s", str);				// printing an error
+	deletingACellFromTheList(cell); // deleting a cell
 }
 
-void deletingArrayOfTree() {
-	for (int i = 0; i < SIZE_ARRAY; i++) {
+void deletingArrayOfTree()
+{
+	for (int i = 0; i < SIZE_ARRAY; i++)
+	{
 		deletingTree(&(arrayTree[i]->root));
 		free(arrayTree[i]);
 		arrayTree[i] = NULL;
 	}
 }
 
-void deletingTree(PNode* root) {
+void deletingTree(PNode *root)
+{
 	/*Check if the node is empty*/
 	if (!(*root))
 		return;
@@ -62,12 +83,14 @@ void deletingTree(PNode* root) {
 		return;
 }
 
-PNode deletingNodeAndDeletingLikeds(PNode* node) {
+PNode deletingNodeAndDeletingLikeds(PNode *node)
+{
 	/*Declaring the pointer variable Node*/
 	PNode like = *node, temp;
 
 	/*Check if the node is empty*/
-	while (like) {
+	while (like)
+	{
 		temp = like;
 		like = like->nextLike;
 		free(temp);
@@ -77,7 +100,8 @@ PNode deletingNodeAndDeletingLikeds(PNode* node) {
 	return NULL;
 }
 
-PNode deletingNode(PNode* node, void* val, int Enum) {
+PNode deletingNode(PNode *node, void *val, int Enum)
+{
 
 	/*Check if the node is empty*/
 	if (!(*node))
@@ -88,10 +112,7 @@ PNode deletingNode(PNode* node, void* val, int Enum) {
 
 	/*Deleting node*/
 	free(*node);
-
-	/*Applying the cell to NULL*/
 	*node = NULL;
 
-	/*Returning the replacement cell*/
 	return temp;
 }

@@ -1,6 +1,6 @@
 #include "CreatingManager.h"
 
-ListManager init_a_new_list_manager()//Creating a new manager structure
+ListManager init_a_new_list_manager() //Creating a new manager structure
 {
 	ListManager temp = (ListManager)malloc(sizeof(List));//creating a new structure
 
@@ -49,15 +49,8 @@ printf("if(temp_buffer)\n");
 printf("create_list_of_customers_from_a_client => DONE\n");
 }
 
-
-
-
-#include "CreatingManager.h"
-#include "HeaderMain.h"
-#include "HeaderTree.h"
-#include "Globals.h"
-
-void crateArrayTreeAndArrayFuncSort() {
+void crateArrayTreeAndArrayFuncSort() 
+{
 	for (int i = 0; i < SIZE_ARRAY; i++) {
 		arrayTree[i] = initRoot();
 	}
@@ -69,8 +62,8 @@ void crateArrayTreeAndArrayFuncSort() {
 	arrSortfunc[EnDate] = testingDate;
 }
 
-PTree initRoot() {
-
+PTree initRoot()
+{
 	/*Creating a variable of type tree*/
 	PTree tree = (PTree)malloc(sizeof(Tree));
 
@@ -98,8 +91,6 @@ PNode createNodeTree(PClient client) {
 	/*Returning the node*/
 	return node;
 }
-
-
 
 PClient initErrorsinAnewCell() //initialize a new client structure
 {
@@ -218,8 +209,6 @@ Date creatingANewDateStructure(char* date) {//create date
 	}
 	return temp;//Return new cell
 }
-
-
 
 void creatingTreesFromLinkedList(ListManager manager) {
 

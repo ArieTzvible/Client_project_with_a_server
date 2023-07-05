@@ -20,15 +20,15 @@ char* get_new_file_Name(char* extension) {//Requesting another file name
 
 void sending_line_to_a_server(FILE* file) {//creating a list from the file
 	char* line = NULL;
-	
+	char* trash = NULL;
 	while (!(feof(file))) {// checking whether the end of the file has been reached
 	printf("sending_line_to_a_server => GettingLine\n");
         line = GettingLine(file);//send to get a line from the file
 		if (line != NULL && *line != '\n') {
 			printf("sending_line_to_a_server => send\n");
             send(sock, line, strlen(line), 0);
-			char* c = recv_();
-			free(c);
+			trash = recv_();
+			free(trash);
 		}
         if(line)
         {
@@ -39,6 +39,6 @@ void sending_line_to_a_server(FILE* file) {//creating a list from the file
 	printf("send_(0)");
     send_("0");
 	printf("recv_(0)");
-	char* c = recv_();
-	free(c);
+	trash = recv_();
+	free(trash);
 }
