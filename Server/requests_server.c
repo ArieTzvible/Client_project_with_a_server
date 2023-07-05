@@ -1,15 +1,15 @@
 
 #include "HeaderRequests.h"
 
-PClient create_a_new_cell_from_the_user(char **buffer, char **send_buffer)
+PClient create_a_new_cell_from_the_user(char *buffer, char **send_buffer)
 { // Create a new cell from the user
-	if (!*buffer)
+	if (!buffer)
 		return NULL;						  // Checking that the string is not empty
 	PClient cellNew = initErrorsinAnewCell(); // Creating a new client
 	if (!cellNew)
 		return NULL;												  // Checking that the allocation was successful
 	char *parameter, *value, *strDate = NULL;						  // Declaration of variables that will hold parenter and test value
-	parameter = creatingADynamicCharWithContent(strtok(*buffer, "=")); // Accepting the test parameter without spaces
+	parameter = creatingADynamicCharWithContent(strtok(buffer, "=")); // Accepting the test parameter without spaces
 	do
 	{
 		value = creatingADynamicCharWithContent(strtok(NULL, ",")); // Receiving the value without profits
@@ -114,7 +114,7 @@ PClient create_a_new_cell_from_the_user(char **buffer, char **send_buffer)
 }
 
 /*Sorting and printing function according to the request*/
-int test_function(PNode root, void *value, char opr, int (*testing)(void *, PClient))
+int test_function(PNode root, void *value, char opr, int (*testing)(void *, PClient), char** buffer)
 { 
 	/*Check if the node is empty*/
 	if ((!root) || (!root->client))
@@ -123,14 +123,12 @@ int test_function(PNode root, void *value, char opr, int (*testing)(void *, PCli
 	PNode temp = root;					 // Create a pointer to the first cell in the existing list
 	int test;							 // Create a variable to receive the test value
 	int flag = 0;						 // Declaration of a variable that checks whether the table header has been printed
-	char** buffer = (char**)malloc(sizeof(char*));
-	*buffer = NULL;
 
 	test = testing(value, temp->client); // getting the test value
 
 	if (opr == '!')
 	{
-		flag += test_function(temp->left, value, opr, testing);
+		flag += test_function(temp->left, value, opr, testing, buffer);
 
 		/*Sending the client and similar pointer to print*/
 		flag += printing_similar_customers(temp, flag, buffer);
@@ -143,7 +141,7 @@ int test_function(PNode root, void *value, char opr, int (*testing)(void *, PCli
 	{
 		if (temp->left)
 		{
-			flag += test_function(temp->left, value, opr, testing);
+			flag += test_function(temp->left, value, opr, testing, buffer);
 		}
 		if (opr == '=')
 			return flag;
@@ -158,7 +156,7 @@ int test_function(PNode root, void *value, char opr, int (*testing)(void *, PCli
 	}
 	else if (test > 0)
 	{
-		flag += test_function(temp->right, value, opr, testing);
+		flag += test_function(temp->right, value, opr, testing, buffer);
 		if (opr == '=')
 			return flag;
 		if (opr == '<')
@@ -189,12 +187,6 @@ void sorting_by_request(char* received_buffer)
 	char **buffer = (char**)malloc(sizeof(char*));
 	*buffer = NULL;
 	char* parameter, *value, opr;
-	// *buffer = get_recv(); // Receiving a row from the user
-	// if (!*buffer)
-	// {
-	// 	free(buffer);
-	// 	return; // Test that the string is not empty
-	// }
 	print_send("PRINT");
 	// Acceptance of the test operator
 	if (strstr(received_buffer, "!="))
@@ -223,22 +215,22 @@ void sorting_by_request(char* received_buffer)
 				if (!isTheStringCorrect(value))											  // checking the correctness of the name and changing it from lowercase to uppercase
 					print_send("\tERROR! It looks like you entered an invalid first name;\n"); // print error
 				else
-					Bool = test_function(arrayTree[EnFirst]->root, value, opr, arrSortfunc[EnFirst]); // Sending to a sorting function and printing according to the request
+					Bool = test_function(arrayTree[EnFirst]->root, value, opr, arrSortfunc[EnFirst], buffer); // Sending to a sorting function and printing according to the request
 			else if (!(strcmp(parameter, "last name")))												 // Checking whether the sorting request is by last name
 				if (!isTheStringCorrect(value))														 // checking the correctness of the name and changing it from lowercase to uppercase
 					printf("\tERROR! It looks like you entered an invalid last name;\n");			 // print error
 				else
-					Bool = test_function(arrayTree[EnLast]->root, value, opr, arrSortfunc[EnLast]); // Sending to a sorting function and printing according to the request
+					Bool = test_function(arrayTree[EnLast]->root, value, opr, arrSortfunc[EnLast], buffer); // Sending to a sorting function and printing according to the request
 			else if (!(strcmp(parameter, "id")))												   // Checking whether the sorting request is by ID
 				if (strlen(value) != ID || !isInt(value))
 					print_send("\tERROR! It looks like you entered an invalid id; \n"); // print error
 				else
-					Bool = test_function(arrayTree[EnID]->root, value, opr, arrSortfunc[EnID]); // Sending to a sorting function and printing according to the request
+					Bool = test_function(arrayTree[EnID]->root, value, opr, arrSortfunc[EnID], buffer); // Sending to a sorting function and printing according to the request
 			else if (!(strcmp(parameter, "phone")))											   // Checking whether the sorting request is by phone
 				if (strlen(value) != PHONE || !isInt(value))
 					print_send("\tERROR! It looks like you entered an invalid phone;\n"); // print error
 				else
-					Bool = test_function(arrayTree[EnPhone]->root, value, opr, arrSortfunc[EnPhone]); // Sending to a sorting function and printing according to the request
+					Bool = test_function(arrayTree[EnPhone]->root, value, opr, arrSortfunc[EnPhone], buffer); // Sending to a sorting function and printing according to the request
 			else if (!(strcmp(parameter, "debt")))
 			{ // Checking whether the sorting request is by debt
 				if (!isNegativeFloat(value))
@@ -246,7 +238,7 @@ void sorting_by_request(char* received_buffer)
 				else
 				{
 					float sumDebt = stringConversionToFloat(value);									  // creating a variable to receive the debt from the string
-					Bool = test_function(arrayTree[EnDebt]->root, &sumDebt, opr, arrSortfunc[EnDebt]); // Sending to a sorting function and printing according to the request
+					Bool = test_function(arrayTree[EnDebt]->root, &sumDebt, opr, arrSortfunc[EnDebt], buffer); // Sending to a sorting function and printing according to the request
 				}
 			}
 			else if (!(strcmp(parameter, "date")))
@@ -255,7 +247,7 @@ void sorting_by_request(char* received_buffer)
 				if (!date.day || !date.month || !date.year)
 					print_send("\tERROR! It looks like you entered an invalid date;\n"); // print error
 				else
-					Bool = test_function(arrayTree[EnDate]->root, &date, opr, arrSortfunc[EnDate]); // Sending to a sorting function and printing according to the request
+					Bool = test_function(arrayTree[EnDate]->root, &date, opr, arrSortfunc[EnDate], buffer); // Sending to a sorting function and printing according to the request
 			}
 			else
 				print_send("\tERROR! It seems there was an error entering the request;\n"); // print error
@@ -283,16 +275,15 @@ void sorting_by_request(char* received_buffer)
 }
 
 // printing a buffer from the user to the file
-void adding_client_from_user(ListManager *list)
+void adding_client_from_user(ListManager *list, char* received_buffer)
 {			
 	char **send_buffer = (char**)malloc(sizeof(char*));	
 	*send_buffer = NULL;			
-	char **buffer = (char**)malloc(sizeof(char*));
-	*buffer = get_recv(); // Receiving a row from the user
+
 	
 
 	PClient cellNew, temp, prev = NULL;
-	cellNew = create_a_new_cell_from_the_user(buffer, send_buffer); // Create a new cell
+	cellNew = create_a_new_cell_from_the_user(received_buffer, send_buffer); // Create a new cell
 	temp = (*list)->head;						 // creating a pointer to the first cell
 	if (cellNew)
 	{
@@ -331,14 +322,12 @@ void adding_client_from_user(ListManager *list)
 				send_client("PRINT");
 				send_client(*send_buffer);
 				free(*send_buffer);
-				if(*buffer)
-					free(*buffer);
 			}
 			else
 			{
 				send_client("OPEN_FILE");
-				free(*buffer);
-				*buffer = get_recv();
+				char **buffer = (char**)malloc(sizeof(char*));
+				*buffer = get_recv(); // Receiving a row from the user
 				printf("%s", *buffer);
 				free(*buffer);
 				*buffer = NULL;
@@ -367,7 +356,9 @@ void adding_client_from_user(ListManager *list)
 				}
 				free(*buffer);
 				*buffer = NULL;
-			}
+			}			
 		}
 	}
+	if(received_buffer)
+		free(received_buffer);
 }

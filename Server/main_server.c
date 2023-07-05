@@ -114,7 +114,7 @@ printf("5: print_instructions\n");
 			print_send("\tEnter your request:\n");
 			buffer = get_recv();
 printf("buffer = recv_();\nbuffer: %s\n", buffer);
-char* choice = strtok(buffer, " ");
+char* choice = strtok(buffer, " \0");
 
 			// Checking the correctness of the letters and changing uppercase letters to lowercase.
 			if (isTheStringCorrect(choice))
@@ -127,7 +127,8 @@ char* choice = strtok(buffer, " ");
 
 				else if (!(strncmp(buffer, "set", 3)))
 				{ // Checking whether he asked to add a new customer
-					adding_client_from_user(&manager_client_list); // Sending to the function of adding a new client.
+					choice = strtok(NULL, "\0");
+					adding_client_from_user(&manager_client_list, choice); // Sending to the function of adding a new client.
 					send_client("PRINT");
 					send_client("\tThe row was received successfully.\n\tThank you very much;\n");
 				}
