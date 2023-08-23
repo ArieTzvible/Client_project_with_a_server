@@ -30,11 +30,11 @@ void create_list_of_customers_from_a_client(ListManager manager)//creating a lis
 			temp_buffer = NULL;
 		}
 		temp_buffer = recv_();//send to get a line from the file
-printf("create_list_of_customers_from_a_client => while\n%s\n", temp_buffer);
+//printf("create_list_of_customers_from_a_client => while\n%s\n", temp_buffer);
 		if (temp_buffer != NULL && strcmp(temp_buffer, "0")) {
-printf("create_list_of_customers_from_a_client => if\n");
+//printf("create_list_of_customers_from_a_client => if\n");
 			PClient temp = createNewClientFromFile(temp_buffer);// send to create a new cell
-printf("testingTheNewCell\n");
+//printf("testingTheNewCell\n");
 			testingTheNewCell(manager, &temp);//Testing new cell
 			
 		}

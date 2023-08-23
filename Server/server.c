@@ -91,12 +91,12 @@ printf("send: %s\n", buffer);
 
 void creating_a_string_with_variables(char **buffer, const char *format, ...)
 {
-    printf("creating_a_string_with_variables\n");
+//printf("creating_a_string_with_variables\n");
     va_list args;
     va_start(args, format); // Start the variable argument list
 
 vprintf(format, args);
-printf("creating_a_string_with_variables => vsnprintf(NULL, 0, format, args)\n");
+//printf("creating_a_string_with_variables => vsnprintf(NULL, 0, format, args)\n");
     int size = vsnprintf(NULL, 0, format, args); // Get the size of the formatted string
     if(size > 0)
     {
@@ -111,7 +111,7 @@ printf("creating_a_string_with_variables => vsnprintf(NULL, 0, format, args)\n")
         char *created_buffer = (char *)malloc(size * sizeof(char)); // Allocate memory for the buffer
         vsprintf(created_buffer, format, args); // Format the string and store it in the buffer
 
-printf("creating_a_string_with_variables => vsprintf(buffer, format, args)\n");
+//printf("creating_a_string_with_variables => vsprintf(buffer, format, args)\n");
         if (size != size_buffer)
         {
             strcat(*buffer, created_buffer);
@@ -176,6 +176,8 @@ void print_recv()
 char* get_recv()
 {
     char* buffer = recv_();
+    //! **************************
+    printf("%s", buffer);
 	send_("0");
     return buffer;
 }

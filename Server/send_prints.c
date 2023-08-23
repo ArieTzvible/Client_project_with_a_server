@@ -96,6 +96,7 @@ printf("print_list_debts_from_the_smallest_to_the_largest => send\n%d\n%s",strle
 /*print the cells with errors*/
 void printing_cells_with_errors(PClient head)
 {
+printf("printing_cells_with_errors()\n");
 	char** buffer = (char**)malloc(sizeof(char*));
 	*buffer = NULL;
 	if (head)
@@ -117,10 +118,11 @@ void printing_cells_with_errors(PClient head)
 			}
 			else
 			{
+printf("printing_cells_with_errors=>else\n");
 				if (temp->error.lacksValues)
 					print_errors(buffer, "lacks values", &printsThatWere); // Send to error print function
 				if (temp->error.id)
-					print_errors(buffer, "I.D.", &printsThatWere); // Send to error print function
+					print_errors(buffer, "ID.", &printsThatWere); // Send to error print function
 				if (temp->error.firstName)
 					print_errors(buffer, "first name", &printsThatWere); // Send to error print function
 				if (temp->error.lastName)
@@ -131,9 +133,11 @@ void printing_cells_with_errors(PClient head)
 					print_errors(buffer, "date", &printsThatWere); // Send to error print function
 				if (temp->error.debt)
 					print_errors(buffer, "debt", &printsThatWere); // Send to error print function
+printf("printsThatWere = %d", printsThatWere);
 				if (printsThatWere > 0)
 				{
-					char* str_space = create_string_by_ch(printsThatWere - 92, ' ');
+					char* str_space = create_string_by_ch(92 - printsThatWere, ' ');
+printf("str_space =>%s<=", str_space);
 					creating_a_string_with_variables(buffer, "%s%s", str_space, "| #");
 					free(str_space);
 				}
@@ -143,7 +147,7 @@ void printing_cells_with_errors(PClient head)
 
 			temp = temp->next; // Move the pointer to the next cell
 		}
-		creating_a_string_with_variables(buffer, "\\t# =============================================================================================== #\n");
+		creating_a_string_with_variables(buffer, "\t# =============================================================================================== #\n");
 	}
 
 	else if (!head)
@@ -254,6 +258,7 @@ int printing_clients_in_ascending_order(PNode root, int flag, char** buffer)
 
 char* create_string_by_ch(int size, char ch)
 {
+	printf("create_string_by_ch => %d\n", size);
 	char *string = malloc(size);
 	if (!string)
 	{

@@ -101,12 +101,12 @@ printf("2: creatingTreesFromLinkedList\n");
 printf("3: printing_debtors_only\n");
 		printing_debtors_only(manager_client_list->head);			// Debtors printing.
 printf("4: printing_cells_with_errors\n");
-		// printing_cells_with_errors(manager_client_list->headError); // Printing the cells with errors
+		printing_cells_with_errors(manager_client_list->headError); // Printing the cells with errors
 printf("5: print_instructions\n");
 		// print_instructions();
 
 		
-		{
+		do{
 			if (buffer){
 				printf("free buffer\n");
 				free(buffer);
@@ -158,44 +158,3 @@ char* choice = strtok(buffer, " \0");
 
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*[{"name": "clang++ - Build and debug active file",
-    "type": "cppdbg",
-    "request": "launch",
-    "program": "${fileDirname}/${fileBasenameNoExtension)",
-    "args": [],
-    "stopAtEntry": false,
-    "cvd": "${workspaceFolder}",
-    "environment": [],
-    "externalConsole": false,
-    "HIMude":"lldb",
-    "preLaunchTask": "C/C++: clang++ build active file"
- } ]*/

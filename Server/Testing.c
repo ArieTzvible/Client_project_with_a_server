@@ -5,6 +5,7 @@ void testingTheNewCell(ListManager manager, PClient* newCell) {// Checking wheth
 	if (!*newCell) return;
 	isTheDataCorrect(newCell);//Checking the data in the new cell
 	if ((*newCell)->error.ERROR) {
+printf("addToHeadTheList => error");
 		addToHeadTheList(&(manager->headError), *newCell);//Sending to add to the top of the list
 		return;
 	}
@@ -20,6 +21,7 @@ void testingTheNewCell(ListManager manager, PClient* newCell) {// Checking wheth
 				break;
 			}
 			if ((*newCell)->error.ERROR) {//Moving the pointer to the tail of the list
+printf("addToHeadTheList => error");
 				addToHeadTheList(&(manager->headError), *newCell);//Sending to add to the top of the list
 				return;
 			}

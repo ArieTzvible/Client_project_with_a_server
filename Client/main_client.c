@@ -60,7 +60,7 @@ int main()
 	/**************************/
 
 	/*Open file*/
-	// char str_user[7] = {0};			  // Create a variable to receive the user's selection.
+	// char str_user[7] = {0};		  // Create a variable to receive the user's selection.
 	int file_name_dynamic = 0;		  // Creating a variable to test whether the pointer to the file is dynamic.
 	char *line = NULL;				  // Create a pointer to receive the user's selection.
 	char *file_name = {0};			  // Create a pointer to get the file name
@@ -134,7 +134,7 @@ printf("while choice\n");
 		{
 			print_recv();
 		}
-
+//! **********************************************
 printf("buffer: %s\n", buffer);
 	} while ((strcmp(buffer, "quit")));
 	buffer = recv_();
