@@ -45,12 +45,12 @@ void my_listen()
     send_("HI, THIS IS SERVER.\n");
 }
 
-char* recv_()
+char *recv_()
 {
     char *buffer = NULL;
     int buffer_size = 0;
     int chunk_size;
-    char chunk[BUFFER_SIZE];
+    char chunk[BUFFER_SIZE] = {'\0'};
 
     do
     {
@@ -58,74 +58,70 @@ char* recv_()
         chunk_size = recv(client_sock, chunk, BUFFER_SIZE, 0);
         if (chunk_size > 0)
         {
-            if(buffer_size){
-                printf("realloc(buffer\n");
+            if (buffer_size)
+            {
                 buffer = (char *)realloc(buffer, (buffer_size + chunk_size) * sizeof(char));
-            strcat(buffer, chunk);
+                strcat(buffer, chunk);
             }
-            else{
+            else
+            {
                 buffer = NULL;
-                printf("chunk: %s\nchunk_size: %d", chunk, chunk_size);
                 buffer = strdup(chunk);
             }
-                // buffer = (char *)calloc(chunk_size, sizeof(char));
             /* checking whether there is space in the memory*/
             if (!buffer)
             {
                 // Error printing when there is no space in memory
                 printf("Not enough memory\n");
             }
-            buffer_size = strlen(buffer);
+            else
+                buffer_size = strlen(buffer);
         }
     } while (chunk_size == BUFFER_SIZE);
-
     return buffer;
 }
 
 void send_(char *buffer)
 {
-printf("send: %s\n", buffer);
     send(client_sock, buffer, strlen(buffer), 0);
 }
 
-
 void creating_a_string_with_variables(char **buffer, const char *format, ...)
 {
-//printf("creating_a_string_with_variables\n");
     va_list args;
     va_start(args, format); // Start the variable argument list
-
-vprintf(format, args);
-//printf("creating_a_string_with_variables => vsnprintf(NULL, 0, format, args)\n");
     int size = vsnprintf(NULL, 0, format, args); // Get the size of the formatted string
-    if(size > 0)
+
+    if (size > 0)
     {
         int size_buffer = size;
-
         if (*buffer)
         {
             size_buffer += strlen(*buffer);
-            *buffer = (char*)realloc(*buffer, size_buffer * sizeof(char));
+            *buffer = (char *)realloc(*buffer, size_buffer * sizeof(char));
         }
-
         char *created_buffer = (char *)malloc(size * sizeof(char)); // Allocate memory for the buffer
         vsprintf(created_buffer, format, args); // Format the string and store it in the buffer
-
-//printf("creating_a_string_with_variables => vsprintf(buffer, format, args)\n");
         if (size != size_buffer)
         {
             strcat(*buffer, created_buffer);
-            free(created_buffer);
-            created_buffer = NULL;
+            if (created_buffer)
+            {
+                free(created_buffer);
+                created_buffer = NULL;
+            }
         }
         else
         {
-            *buffer = created_buffer;
+            *buffer = strdup(created_buffer);
+            if(created_buffer){
+                free(created_buffer);
+                created_buffer = NULL;
+            }
         }
     }
     va_end(args); // End the variable argument list
 }
-
 
 // void sending_a_cell_to_add_in_the_file(PClient client)
 // {
@@ -152,45 +148,45 @@ vprintf(format, args);
 //     }
 // }
 
+// todo ****************************************
 
-
-//todo ****************************************
-
-void print_send(char* buffer)
+void print_send(char *buffer)
 {
     send_(buffer);
-    char* trash = recv_();
-    printf("trash: %s\n", trash);
-    free(trash);
+    printf("sent: \n%s\n", buffer);
+    char *trash = recv_();
+    if (trash)
+    {
+        free(trash);
+        trash = NULL;
+    }
 }
 
 void print_recv()
 {
-    char* buffer = recv_();
-	printf("%s\n", buffer);
-	free(buffer);
-	buffer = NULL;
-	send_("0");
+    char *buffer = recv_();
+    if (buffer)
+    {
+        free(buffer);
+        buffer = NULL;
+    }
+    send_("0");
 }
 
-char* get_recv()
+char *get_recv()
 {
-    char* buffer = recv_();
-    //! **************************
-    printf("%s", buffer);
-	send_("0");
+    char *buffer = recv_();
+    send_("0");
     return buffer;
 }
 
-void send_client(char* buffer)
+void send_client(char *buffer)
 {
     send_(buffer);
-    char* trash = recv_();
-    free(trash);
+    char *trash = recv_();
+    if (trash)
+    {
+        free(trash);
+        trash = NULL;
+    }
 }
-
-// void send_(char *buffer)
-// {
-// printf("send: %s\n", buffer);
-//     send(client_sock, buffer, strlen(buffer), 0);
-// }

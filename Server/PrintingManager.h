@@ -28,7 +28,7 @@ void print_table_head(char** buffer, char* print);//Creating a printable table h
 void print_cell(PClient cell, char** buffer);//Single client printing
 void printing_debtors_only(PClient head);//Printing a list of debts only.
 void printing_cells_with_errors(PClient head);//Client printing with errors
-void print_errors(char** buffer, char* error, int* printsThatWere);//Print the error
+void print_errors(char** buffer, char* error);//Print the error
 void print_a_sorted_cell(PClient previousList, int flag, char** buffer);//Print a sorted cell
 int printing_similar_customers(PNode node, int flag, char** buffer);
 

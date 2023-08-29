@@ -88,72 +88,62 @@ int main()
 
 	// while (1)
 	// {
-		char *buffer = NULL;
+	char *buffer = NULL;
 
-		my_listen();
-		
-		crateArrayTreeAndArrayFuncSort();//Sending to create an array of sorting functions
-		ListManager manager_client_list = init_a_new_list_manager(); // Creating a new manageme structure.
-printf("1: create_list_of_customers_from_a_client\n");
-		create_list_of_customers_from_a_client(manager_client_list);
-printf("2: creatingTreesFromLinkedList\n");
-		creatingTreesFromLinkedList(manager_client_list);
-printf("3: printing_debtors_only\n");
-		printing_debtors_only(manager_client_list->head);			// Debtors printing.
-printf("4: printing_cells_with_errors\n");
-		printing_cells_with_errors(manager_client_list->headError); // Printing the cells with errors
-printf("5: print_instructions\n");
-		// print_instructions();
+	my_listen();
 
-		
-		do{
-			if (buffer){
-				printf("free buffer\n");
-				free(buffer);
-				}
-			print_send("\tEnter your request:\n");
-			buffer = get_recv();
-printf("buffer = recv_();\nbuffer: %s\n", buffer);
-char* choice = strtok(buffer, " \0");
+	crateArrayTreeAndArrayFuncSort();// Sending to create an array of sorting functions
+	ListManager manager_client_list = init_a_new_list_manager(); // Creating a new manageme structure.
+	create_list_of_customers_from_a_client(manager_client_list);
+	creatingTreesFromLinkedList(manager_client_list);
+	printing_debtors_only(manager_client_list->head); // Debtors printing.
+	printing_cells_with_errors(manager_client_list->headError); // Printing the cells with errors
+	print_instructions();
 
-			// Checking the correctness of the letters and changing uppercase letters to lowercase.
-			if (isTheStringCorrect(choice))
+	do
+	{
+		if (buffer)
+			free(buffer);
+		send_client("your request: ");
+		buffer = get_recv();
+		char *choice = strtok(buffer, " \0");
+		if (isTheStringCorrect(choice))
+		{
+			if (!(strncmp(buffer, "select", 6))) // Checks if he asked to sort
 			{
-				if (!(strncmp(buffer, "select", 6))) // Checks if he asked to sort
-				{
-					choice = strtok(NULL, "\0");
-					sorting_by_request(choice); // Sending to a sort function
-				}
-
-				else if (!(strncmp(buffer, "set", 3)))
-				{ // Checking whether he asked to add a new customer
-					choice = strtok(NULL, "\0");
-					adding_client_from_user(&manager_client_list, choice); // Sending to the function of adding a new client.
-					send_client("PRINT");
-					send_client("\tThe row was received successfully.\n\tThank you very much;\n");
-				}
-
-				else if (!(strncmp(buffer, "print", 5))) // Checking whether printing was requested.
-				{
-					send_client("PRINT");
-					printing_debtors_only(manager_client_list->head); // Debtors printing.
-				}
-				else if (!(strncmp(buffer, "error", 5))) // Checking whether printing was errors.
-				{
-					send_client("PRINT");
-					printing_cells_with_errors(manager_client_list->headError); // Printing the cells with errors
-				}
+				choice = strtok(NULL, "\0");
+				sorting_by_request(choice); // Sending to a sort function
 			}
 
-		} while ((strncmp(buffer, "quit", 4))); // Loop exit conditions
-		if (buffer)
-		{
-			free(buffer);
-			buffer = NULL;
+			else if (!(strncmp(buffer, "set", 3)))
+			{ // Checking whether he asked to add a new customer
+				choice = strtok(NULL, "\0");
+				adding_client_from_user(&manager_client_list, choice); // Sending to the function of adding a new client.
+				send_client("PRINT");
+				send_client("\tThe row was received successfully.\n\tThank you very much;\n");
+			}
+
+			else if (!(strncmp(buffer, "print", 5))) // Checking whether printing was requested.
+			{
+				send_client("PRINT");
+				printing_debtors_only(manager_client_list->head); // Debtors printing.
+			}
+			else if (!(strncmp(buffer, "error", 5))) // Checking whether printing was errors.
+			{
+				send_client("PRINT");
+				printing_cells_with_errors(manager_client_list->headError); // Printing the cells with errors
+			}
 		}
-		send_client("quit");
-		send_client("BYE BYE ;)\n");
-		close(client_sock);
+
+	} while ((strncmp(buffer, "quit", 4))); // Loop exit conditions
+	if (buffer)
+	{
+		free(buffer);
+		buffer = NULL;
+	}
+	send_client("quit");
+	send_client("BYE BYE ;)\n");
+	close(client_sock);
 	// }
 
 	return 0;

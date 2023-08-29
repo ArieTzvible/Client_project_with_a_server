@@ -11,7 +11,7 @@ TARGET = main
 all: $(TARGET)
 
 $(TARGET): $(SRCS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -g -o $@ $^
 
 clean:
 	rm -f $(TARGET)

@@ -218,7 +218,7 @@ void sorting_by_request(char* received_buffer)
 					Bool = test_function(arrayTree[EnFirst]->root, value, opr, arrSortfunc[EnFirst], buffer); // Sending to a sorting function and printing according to the request
 			else if (!(strcmp(parameter, "last name")))												 // Checking whether the sorting request is by last name
 				if (!isTheStringCorrect(value))														 // checking the correctness of the name and changing it from lowercase to uppercase
-					printf("\tERROR! It looks like you entered an invalid last name;\n");			 // print error
+					print_send("\tERROR! It looks like you entered an invalid last name;\n");			 // print error
 				else
 					Bool = test_function(arrayTree[EnLast]->root, value, opr, arrSortfunc[EnLast], buffer); // Sending to a sorting function and printing according to the request
 			else if (!(strcmp(parameter, "id")))												   // Checking whether the sorting request is by ID
@@ -278,13 +278,10 @@ void sorting_by_request(char* received_buffer)
 void adding_client_from_user(ListManager *list, char* received_buffer)
 {			
 	char **send_buffer = (char**)malloc(sizeof(char*));	
-	*send_buffer = NULL;			
-
-	
-
+	*send_buffer = NULL;
 	PClient cellNew, temp, prev = NULL;
 	cellNew = create_a_new_cell_from_the_user(received_buffer, send_buffer); // Create a new cell
-	temp = (*list)->head;						 // creating a pointer to the first cell
+	temp = (*list)->head;// creating a pointer to the first cell
 	if (cellNew)
 	{
 		int Comparison = 0; // variable that will contain the comparison between two cells
@@ -303,7 +300,6 @@ void adding_client_from_user(ListManager *list, char* received_buffer)
 				temp = temp->next; // Move the pointer to the next cell
 
 			} while (temp && cellNew && !cellNew->error.ERROR);
-			// checking that the list is not at the end or that the cell is empty or that there is an error in the cell
 		}
 		if (cellNew)
 		{
@@ -328,7 +324,6 @@ void adding_client_from_user(ListManager *list, char* received_buffer)
 				send_client("OPEN_FILE");
 				char **buffer = (char**)malloc(sizeof(char*));
 				*buffer = get_recv(); // Receiving a row from the user
-				printf("%s", *buffer);
 				free(*buffer);
 				*buffer = NULL;
 				creating_a_string_with_variables(buffer, "%s,%s,%s,%s,%.2f,%02d/%02d/%04d\n", cellNew->firstName, cellNew->lastName,

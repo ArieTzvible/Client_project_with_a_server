@@ -25,28 +25,18 @@ void create_list_of_customers_from_a_client(ListManager manager)//creating a lis
 	{// checking whether the end of the file has been reached
 		if(temp_buffer)
 		{
-			printf("free(temp_buffer)\n");
 			free(temp_buffer);
 			temp_buffer = NULL;
 		}
 		temp_buffer = recv_();//send to get a line from the file
-//printf("create_list_of_customers_from_a_client => while\n%s\n", temp_buffer);
 		if (temp_buffer != NULL && strcmp(temp_buffer, "0")) {
-//printf("create_list_of_customers_from_a_client => if\n");
 			PClient temp = createNewClientFromFile(temp_buffer);// send to create a new cell
-//printf("testingTheNewCell\n");
-			testingTheNewCell(manager, &temp);//Testing new cell
-			
+			testingTheNewCell(manager, &temp);//Testing new cell			
 		}
-printf("send_(0)\n");
 		send_("0");
-printf("%s\n", temp_buffer);
-
 	} while (temp_buffer && (strcmp(temp_buffer, "0")));
-printf("if(temp_buffer)\n");
 	if(temp_buffer)
 		free(temp_buffer);
-printf("create_list_of_customers_from_a_client => DONE\n");
 }
 
 void crateArrayTreeAndArrayFuncSort() 
@@ -66,28 +56,22 @@ PTree initRoot()
 {
 	/*Creating a variable of type tree*/
 	PTree tree = (PTree)malloc(sizeof(Tree));
-
 	/*Put the root to NULL*/
 	tree->root = NULL;
-
 	/*Returning the tree*/
 	return tree;
 }
 
 PNode createNodeTree(PClient client) {
-
 	/*Creating a variable of type node*/
 	PNode node = (PNode)malloc(sizeof(Node));
-
 	/*Put the client to the client we received*/
 	node->client = client;
-
 	/*Set the elements to NULL*/
 	node->father = NULL;
 	node->left = NULL;
 	node->right = NULL;
 	node->nextLike = NULL;
-
 	/*Returning the node*/
 	return node;
 }
@@ -95,7 +79,6 @@ PNode createNodeTree(PClient client) {
 PClient initErrorsinAnewCell() //initialize a new client structure
 {
 	PClient newClient = (PClient)malloc(sizeof(Client));//Declaration and creation of a new structure
-
 	if (!newClient)
 	{
 		//Error printing when there is no space in memory
@@ -103,7 +86,6 @@ PClient initErrorsinAnewCell() //initialize a new client structure
 		send_("Not enough memory\n");
 		return NULL;
 	}
-
 	newClient->next = NULL;
 	newClient->firstName = NULL;
 	newClient->lastName = NULL;
@@ -123,7 +105,6 @@ PClient initErrorsinAnewCell() //initialize a new client structure
 	newClient->error.comparisonFirstName = 0;//record T.Z. Does not match first name
 	newClient->error.comparisonLastName = 0;//Error ID Does not match last name
 	newClient->error.lacksValues = 0;//Error Not enough values
-
 	return newClient;
 }
 
@@ -151,7 +132,6 @@ PClient createNewClientFromFile(char* line) {//creating a new customer from the 
 		free(line);
 		return NULL;
 	}
-printf("createNewClientFromFile => initErrorsinAnewCell\n");
 	PClient temp = initErrorsinAnewCell();//initialize a new client structure
 	void (*arr[6])(PClient curr, char* string) = {
 		fillingInAFirstName, fillingInALastName, fillingInAID,
@@ -172,10 +152,6 @@ printf("createNewClientFromFile => initErrorsinAnewCell\n");
 	}
 	if ((!temp->date.day) && (!temp->date.month) && (!temp->date.year))
 		temp->error.lacksValues = temp->error.ERROR = 1;//Missing values
-
-	//free(line);
-	
-printf("createNewClientFromFile => DONE\n");
 	return temp;
 }
 
@@ -215,16 +191,12 @@ void creatingTreesFromLinkedList(ListManager manager) {
 	/*Check if the list is empty*/
 	if ((!manager) || (!manager->head))
 		return;
-
 	/*Create a pointer to the client*/
 	PClient temp = manager->head;
-
 	/*A loop that goes over the list and sends to create a sorted tree*/
 	while (temp) {
-
 		/*Sending a client to enter in all sorting trees*/
 		nsertingAClientIntoAllSortingTrees(temp);
-
 		/*Move the pointer to the next cell*/
 		temp = temp->next;
 	}
@@ -255,16 +227,13 @@ void addToHeadTheList(PClient* head, PClient newCell)
 void addingASortedCustomerToTheList(PClient* head, PClient newCell)
 {
 	if (!newCell) return;
-
 	if (*head == NULL || newCell->debt <= (*head)->debt) //Checking whether the first cell is empty
 	{
 		newCell->next = *head;//Bringing the customer to the top of the list
 		*head = newCell;//Moving the pointer to the top of the list
 		return;
 	}
-
 	PClient temp = *head;//Declare a pointer to the first cell in the list
-
 	while (temp)
 	{
 		/*Test A: End of list. B: A debt smaller than the current debt*/
@@ -274,7 +243,6 @@ void addingASortedCustomerToTheList(PClient* head, PClient newCell)
 			temp->next = newCell;//Getting the next client on the list
 			return;
 		}
-
 		temp = temp->next;//Move the pointer to the next cell
 	}
 }
