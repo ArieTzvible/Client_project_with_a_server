@@ -168,61 +168,60 @@ char *create_string_by_ch(int size, char ch)
 /*print the cells with errors*/
 void printing_cells_with_errors(PClient head)
 {
-	char **buffer = (char **)malloc(sizeof(char *));
-	*buffer = NULL;
+	char* buffer = NULL;
 	PClient temp = head; // creating a pointer to the top of the list
 
 	if (head)
 	{
-		print_table_head(buffer, "ERRORS!!   "); // Send to create a table with a header
+		print_table_head(&buffer, "ERRORS!!   "); // Send to create a table with a header
 		while (temp)
 		{
 			prints_that_were = 0;
-			print_cell(temp, buffer); // Cell printing
+			print_cell(temp, &buffer); // Cell printing
 			if (temp->error.comparisonFirstName || temp->error.comparisonLastName)
 			{
 				if (temp->error.comparisonFirstName)
-					creating_a_string_with_variables(buffer, "\t# |  The first name does not match the ID number -> %s != %-16s               | #", temp->id, temp->firstName); // print error
+					creating_a_string_with_variables(&buffer, "\t# |  The first name does not match the ID number -> %s != %-16s               | #", temp->id, temp->firstName); // print error
 				if (temp->error.comparisonFirstName && temp->error.comparisonLastName)
-					creating_a_string_with_variables(buffer, "\n");
+					creating_a_string_with_variables(&buffer, "\n");
 				if (temp->error.comparisonLastName)
-					creating_a_string_with_variables(buffer, "\t# |  The last name does not match the ID number -> %s != %-15s                 | #", temp->id, temp->lastName); // print error
+					creating_a_string_with_variables(&buffer, "\t# |  The last name does not match the ID number -> %s != %-15s                 | #", temp->id, temp->lastName); // print error
 			}
 			else
 			{
 				if (temp->error.lacksValues)
-					print_errors(buffer, "lacks values"); // Send to error print function
+					print_errors(&buffer, "lacks values"); // Send to error print function
 				if (temp->error.id)
-					print_errors(buffer, "ID"); // Send to error print function
+					print_errors(&buffer, "ID"); // Send to error print function
 				if (temp->error.firstName)
-					print_errors(buffer, "first name"); // Send to error print function
+					print_errors(&buffer, "first name"); // Send to error print function
 				if (temp->error.lastName)
-					print_errors(buffer, "last name"); // Send to error print function
+					print_errors(&buffer, "last name"); // Send to error print function
 				if (temp->error.phone)
-					print_errors(buffer, "phone"); // Send to error print function
+					print_errors(&buffer, "phone"); // Send to error print function
 				if (temp->error.date)
-					print_errors(buffer, "date"); // Send to error print function
+					print_errors(&buffer, "date"); // Send to error print function
 				if (temp->error.debt)
-					print_errors(buffer, "debt"); // Send to error print function
+					print_errors(&buffer, "debt"); // Send to error print function
 				if (prints_that_were > 0)
 				{
-
 					char *str_space = create_string_by_ch(92 - prints_that_were, ' ');
-					creating_a_string_with_variables(buffer, "%s%s", str_space, "| #");
+					creating_a_string_with_variables(&buffer, "%s", str_space);
 					if (str_space)
 						free(str_space);
+					creating_a_string_with_variables(&buffer, "%s", "| #");
 				}
 			}
-			creating_a_string_with_variables(buffer, "\
+			creating_a_string_with_variables(&buffer, "\
 			\n\t# |---------------------------------------------------------------------------------------------| #\n");
 			temp = temp->next; // Move the pointer to the next cell
 		}
-		creating_a_string_with_variables(buffer, "\t# =============================================================================================== #\n");
+		creating_a_string_with_variables(&buffer, "\t# =============================================================================================== #\n");
 	}
 
 	else if (!head)
 	{ // Print when there are no errors
-		creating_a_string_with_variables(buffer, "\
+		creating_a_string_with_variables(&buffer, "\
 			\n\t###################################################################################################\
 			\n\t#                                                                                                 #\
 			\n\t#    *****************************************************************************************    #\
@@ -231,14 +230,15 @@ void printing_cells_with_errors(PClient head)
 			\n\t#                                                                                                 #\
 			\n\t#    *****************************************************************************************    #\n");
 	}
-	creating_a_string_with_variables(buffer, "\t#                                                                                                 #\
+	creating_a_string_with_variables(&buffer, "\t#                                                                                                 #\
 		\n\t###################################################################################################\n");
 
-	print_send(*buffer);
-	free(*buffer);
-	*buffer = NULL;
-	free(buffer);
-	buffer = NULL;
+	print_send(buffer);
+	if(buffer)
+	{
+		free(buffer);
+		buffer = NULL;
+	}
 }
 
 void print_errors(char **buffer, char *error)
@@ -253,10 +253,9 @@ void print_errors(char **buffer, char *error)
 	if (prints_that_were + (strlen(error) + 16) >= 86)
 	{
 		char *str_space = create_string_by_ch(86 - prints_that_were, ' ');
-		creating_a_string_with_variables(buffer, "%s", str_space);
+		creating_a_string_with_variables(buffer, "%s       | #\n\t# | ", str_space);
 		if (str_space)
 			free(str_space);
-		creating_a_string_with_variables(buffer, "%s", "       | #\n\t# | ");
 		prints_that_were = 0;
 	}
 	if (prints_that_were != 7) // checking that it is not a first print
@@ -264,7 +263,6 @@ void print_errors(char **buffer, char *error)
 		creating_a_string_with_variables(buffer, "%s", " and ");
 		prints_that_were += 5; // added to the number of characters printed
 	}
-	creating_a_string_with_variables(buffer, "%s", "uncorect ");
-	creating_a_string_with_variables(buffer, "%s ", error);
+	creating_a_string_with_variables(buffer, "uncorect %s ", error);
 	prints_that_were += ((int)strlen(error) + 10); // added to the number of characters printed
 }

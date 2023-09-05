@@ -258,8 +258,10 @@ void sorting_by_request(char* received_buffer)
 	}
 
 	if (!Bool)
+	{
 		print_send("\tThere are no debts in the current list;\n"); // Print error
-
+		return;
+	}
 	else
 	{
 		creating_a_string_with_variables(buffer, "\t# =============================================================================================== #\n");

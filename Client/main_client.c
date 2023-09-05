@@ -1,54 +1,44 @@
-
-
-//   Built by Arie Tzvible
-//***********************************************
+// Built by Aryeh Zweibel
+//**************************************************** **
 // Managing debts in a business from a portfolio
-//***********************************************
+//**************************************************** **
 //
-// The program reading a CSV file.That in every row, the data appears in the following section:
-// First name, last name, social security number, telephone, amount dueand date.
-// Any customer can receivemore than one line, first nameand last name must match ID otherwise
-// will be printed Error.
+// The program sends a CSV file to the server. that in each row, the data appears in the next section:
+// First name, last name, social security number, telephone, payment amount and date.
+// Each customer can have more than one row, first name and last name must match another identity
+// An error will be printed.
+// The server returns a list of debtors as well as a list with the errors.
+// If there are no errors the server will print this.
 //
-// The program builds a linked list where each customer has one cell that is updated with all
-// debts or the payments and also updates the date to the most recent date, the customer's phone
-// is also updated according to the most recent date.
-// In addition, the system checks whether there is an error in each lineand updates it in the error list.
+//************************************
 //
-// The program then print the list of customers who have a debt.
-// In addition, the program will be printing list with the errorsand notes where the errors are,
-// if there are no errors the system will notify.
-//
-//***********************************
-//
-// At this point the system will issue a request to the user to enter a request.
-// The user can request a to wiil print of of all debtors.
-// The user must log in "print".
+// At this point the server will ask the user to enter a request.
+// 1: The user can request a printout of all debtors.
+// The user must enter "print".
 //
 //
-// Another option is printing according to a certain value with 4 ( = / != / < / > ) sorting options
+// 2: The user can request printing according to a certain value with 4 ( = / != / < / > ) sorting options
 // big small equal and different,
-//     For example: "Select First name != Arie".
+// For example: "select firstname != lion".
 //
 //
-// You can also add a new line to the customer list.
+// 3: You can also add a new line to the customer list
+//    Between a new customer and a customer with previous debt.
 // All customer fields must be filled in:
-// - first name,
-// - last name,
+// - First name,
+// - Last Name,
 // - ID,
-// - phone number,
-// - amount of debt / payment,
+// - Phone Number,
+// - Amount of debt / payment,
 // - date.
-// For example : "set first name = Arie, ID = 123456789,..."
+// For example: "set first name = lion, id = 123456789,..."
 //
 // -- There is no obligation to enter the values in a particular order.
-// -- All details must be entered(otherwise the system will print an error).
+// -- All details must be entered (otherwise the system will print an error).
 //
-// The system will print a new line in the file with all the customer's details.
-// If the customer exists, we will add the debt, if necessary we will update the details(date and phone).
-// If the client does not exist we will add the client to the list.
-//
-// In order to exit the program and finish, enter "Quit".
+// The server will send the new line in the file with all the customer details.
+// The program will insert the line into the file.
+// 4: To exit the program and finish, enter "exit".
 // The program will release the list and close the program.
 //
 #include "HeaderMain.h"
@@ -57,10 +47,8 @@ int main()
 {
 	/*Booting and connecting the client to the server*/
 	init_client();
-	/**************************/
 
 	/*Open file*/
-	// char str_user[7] = {0};		  // Create a variable to receive the user's selection.
 	int file_name_dynamic = 0;		  // Creating a variable to test whether the pointer to the file is dynamic.
 	char *line = NULL;				  // Create a pointer to receive the user's selection.
 	char *file_name = {0};			  // Create a pointer to get the file name
@@ -80,34 +68,18 @@ int main()
 	/************/
 
 	/*Sending the file line by line to the server*/
-	printf("sending_line_to_a_server\n");
 	sending_line_to_a_server(debt_file);
-printf("fclose(debt_file)\n");
 	fclose(debt_file); // Closing a folder.
-
-
-printf("\nprint:\n");
-	print_recv();
-
-printf("error\n");
-	// print_recv();
-
-
-printf("menu\n");
-	// print_recv();
-
+	print_recv();//Printing a list of debtors
+	print_recv();//printing errors
+	print_recv();//Menu printing
 
 	do
 	{
-printf("while choice\n");
 		print_recv();
-
-		// scanf("%s", str_user);
-		// send_server(str_user);
-		// // if()
 		line = GettingLine(stdin);
 		send_server(line);
-		
+
 		if (buffer)
 			free(buffer);
 		buffer = get_recv();
@@ -134,18 +106,22 @@ printf("while choice\n");
 		{
 			print_recv();
 		}
-//! **********************************************
-printf("buffer: %s\n", buffer);
 	} while ((strcmp(buffer, "quit")));
+
+	/*Receiving a closing instruction from the server and printing them*/
+	//****************************************************
 	buffer = recv_();
 	printf("SERVER: %s", buffer);
-	free(buffer);
+	if (buffer)
+		free(buffer);
 	buffer = NULL;
 	close(sock);
 	printf("Disconnected from the server.\n\n");
+	//****************************************************
 
 	if (file_name_dynamic) // Checking if the string is dynamic.
 		free(file_name);   // Release the string.
+
 	printf("\n\tBye Bye!!\n");
 
 	return 0;

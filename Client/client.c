@@ -30,40 +30,6 @@ void init_client()
 
 }
 
-char* recv_()
-{
-    char *buffer = NULL;
-    int buffer_size = 0;
-    int chunk_size;
-    char chunk[BUFFER_SIZE];
-
-    do
-    {
-        bzero(chunk, BUFFER_SIZE);
-        chunk_size = recv(sock, chunk, BUFFER_SIZE, 0);
-        if (chunk_size > 0)
-        {
-            if(buffer_size)
-            {
-                buffer = (char *)realloc(buffer, (buffer_size + chunk_size) * sizeof(char));
-                strcat(buffer, chunk);
-            }
-            else
-                buffer = strdup(chunk);
-                // buffer = (char *)calloc(chunk_size, sizeof(char));
-            /* checking whether there is space in the memory*/
-            if (!buffer)
-            {
-                // Error printing when there is no space in memory
-                printf("Not enough memory\n");
-            }
-            buffer_size = strlen(buffer);
-        }
-    } while (chunk_size == BUFFER_SIZE);
-
-    return buffer;
-}
-
 void send_(char *buffer)
 {
     send(sock, buffer, strlen(buffer), 0);
@@ -84,25 +50,28 @@ void print_from_recv()
         if(!strcmp(buffer, "0"))
         printf("%s", buffer);
     } while (!strcmp(buffer, "0"));
-    free(buffer);
+    if (buffer)
+        free(buffer);
     buffer = NULL;
 }
-
-//todo ****************************************
 
 void print_send(char* buffer)
 {
     send_(buffer);
     char* trash = recv_();
-    free(trash);
+    if(trash)
+        free(trash);
 }
 
 void print_recv()
 {
     char* buffer = recv_();
 	printf("%s\n", buffer);
-	free(buffer);
-	buffer = NULL;
+    if(buffer)
+    {
+    	free(buffer);
+	    buffer = NULL;
+    }
 	send_("0");
 }
 
@@ -117,5 +86,51 @@ void send_server(char* buffer)
 {
     send_(buffer);
     char* trash = recv_();
-    free(trash);
+    if(trash)
+        free(trash);
+    trash = NULL;
+}
+
+char *recv_()
+{
+    char *buffer = NULL;
+    int buffer_size = 0;
+    int chunk_size;
+    char chunk[BUFFER_SIZE] = {'\0'};
+
+    do
+    {
+        bzero(chunk, BUFFER_SIZE);
+        chunk_size = recv(sock, chunk, BUFFER_SIZE, 0);
+        if (chunk_size > 0)
+        {
+            if (buffer_size)
+            {
+                char *new_buffer = (char *)realloc(buffer, (buffer_size + chunk_size + 1) * sizeof(char));
+                if (new_buffer)
+                {
+                    buffer = new_buffer;
+                    strcat(buffer, chunk);
+                    buffer_size += chunk_size;
+                }
+                else
+                {
+                    printf("Not enough memory\n");
+                    free(buffer); // Free the previously allocated buffer
+                    return NULL; // Return NULL to indicate an error
+                }
+            }
+            else
+            {
+                buffer = strdup(chunk);
+                if (!buffer)
+                {
+                    printf("Not enough memory\n");
+                    return NULL; // Return NULL to indicate an error
+                }
+                buffer_size = chunk_size;
+            }
+        }
+    } while (chunk_size == BUFFER_SIZE);
+    return buffer;
 }
