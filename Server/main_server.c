@@ -84,12 +84,9 @@ int testingDate(void *value, PClient client)
 
 int main()
 {
-	init_server();
-
-	// while (1)
-	// {
 	char *buffer = NULL;
-
+	
+	init_server();
 	my_listen();
 
 	crateArrayTreeAndArrayFuncSort();// Sending to create an array of sorting functions
@@ -133,8 +130,11 @@ int main()
 				send_client("PRINT");
 				printing_cells_with_errors(manager_client_list->headError); // Printing the cells with errors
 			}
+			else if((strncmp(buffer, "quit", 4)))
+			{
+				send_client("Invalid input\n");
+			}
 		}
-
 	} while ((strncmp(buffer, "quit", 4))); // Loop exit conditions
 	if (buffer)
 	{
@@ -144,7 +144,5 @@ int main()
 	send_client("quit");
 	send_client("BYE BYE ;)\n");
 	close(client_sock);
-	// }
-
 	return 0;
 }

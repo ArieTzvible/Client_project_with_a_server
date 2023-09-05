@@ -51,7 +51,7 @@ void printing_debtors_only(PClient head)
 {
 	if (!head)
 	{
-		print_send("\tThere are no debts in the current list;\n"); // print error
+		print_send("\tThere are no debts in the current list;\n");
 		return;
 	}
 	print_list_debts_from_the_smallest_to_the_largest(head, "List of Debtors  "); // Sending to the function that prints the debt from the largest to the smallest

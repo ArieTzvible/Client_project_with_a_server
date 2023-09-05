@@ -24,7 +24,7 @@ PClient create_a_new_cell_from_the_user(char *buffer, char **send_buffer)
 					if (!(cellNew->firstName))
 					{
 						error_printing_and_deleting_a_cell(&cellNew, "\tERROR! It looks like you entered an invalid first name;\n", send_buffer); // printing an error and deleting a cell
-						free(value);																							// Release a value
+						free(value);																											  // Release a value
 					}
 				}
 				else if (!strcmp(parameter, "last name"))
@@ -34,7 +34,7 @@ PClient create_a_new_cell_from_the_user(char *buffer, char **send_buffer)
 					if (!(cellNew->lastName))
 					{
 						error_printing_and_deleting_a_cell(&cellNew, "\tERROR! It looks like you entered an invalid last name;\n", send_buffer); // printing an error and deleting a cell
-						free(value);																						   // Release a value
+						free(value);																											 // Release a value
 					}
 				}
 				else if (!strcmp(parameter, "id"))
@@ -46,7 +46,7 @@ PClient create_a_new_cell_from_the_user(char *buffer, char **send_buffer)
 					if (!(cellNew->id))
 					{
 						error_printing_and_deleting_a_cell(&cellNew, "\tERROR! It looks like you entered an invalid ID;\n", send_buffer); // printing an error and deleting a cell
-						free(value);																					// Release a value
+						free(value);																									  // Release a value
 					}
 				}
 				else if (!strcmp(parameter, "phone"))
@@ -58,7 +58,7 @@ PClient create_a_new_cell_from_the_user(char *buffer, char **send_buffer)
 					if (!cellNew->phone)
 					{
 						error_printing_and_deleting_a_cell(&cellNew, "\tERROR! It looks like you entered an invalid phone;\n", send_buffer); // printing an error and deleting a cell
-						free(value);																					   // Release a value
+						free(value);																										 // Release a value
 					}
 				}
 				else if (!strcmp(parameter, "debt"))
@@ -67,7 +67,7 @@ PClient create_a_new_cell_from_the_user(char *buffer, char **send_buffer)
 						cellNew->debt = stringConversionToFloat(value); // Receiving the number for the client
 					if (!(cellNew->debt))
 						error_printing_and_deleting_a_cell(&cellNew, "\tERROR! It looks like you entered an invalid debt;\n", send_buffer); // printing an error and deleting a cell
-					free(value);																						  // Release a value
+					free(value);																											// Release a value
 				}
 				else if (!strcmp(parameter, "date"))
 				{							 // testing to which object in the cell we will add
@@ -77,13 +77,13 @@ PClient create_a_new_cell_from_the_user(char *buffer, char **send_buffer)
 				else
 				{
 					error_printing_and_deleting_a_cell(&cellNew, "\tERROR! There seems to be a mistake in typing the variable;\n", send_buffer); // printing an error and deleting a cell
-					free(value);																							   // Release a value
+					free(value);																												 // Release a value
 				}
 			}
 			else
 			{
 				error_printing_and_deleting_a_cell(&cellNew, "\tERROR! There seems to be a mistake in typing the request;\n", send_buffer); // printing an error and deleting a cell
-				free(value);																							  // Release a value
+				free(value);																												// Release a value
 			}
 		}
 		free(parameter); // Release a parameter
@@ -114,15 +114,15 @@ PClient create_a_new_cell_from_the_user(char *buffer, char **send_buffer)
 }
 
 /*Sorting and printing function according to the request*/
-int test_function(PNode root, void *value, char opr, int (*testing)(void *, PClient), char** buffer)
-{ 
+int test_function(PNode root, void *value, char opr, int (*testing)(void *, PClient), char **buffer)
+{
 	/*Check if the node is empty*/
 	if ((!root) || (!root->client))
 		return 0;
 
-	PNode temp = root;					 // Create a pointer to the first cell in the existing list
-	int test;							 // Create a variable to receive the test value
-	int flag = 0;						 // Declaration of a variable that checks whether the table header has been printed
+	PNode temp = root; // Create a pointer to the first cell in the existing list
+	int test;		   // Create a variable to receive the test value
+	int flag = 0;	   // Declaration of a variable that checks whether the table header has been printed
 
 	test = testing(value, temp->client); // getting the test value
 
@@ -181,12 +181,12 @@ int test_function(PNode root, void *value, char opr, int (*testing)(void *, PCli
 	return flag;
 }
 
-void sorting_by_request(char* received_buffer)
-{ // Sort by request from the user
+void sorting_by_request(char *received_buffer)
+{
+	// Sort by request from the user
 	int Bool = 0;
-	char **buffer = (char**)malloc(sizeof(char*));
-	*buffer = NULL;
-	char* parameter, *value, opr;
+	char *buffer = NULL;
+	char *parameter, *value, opr;
 	print_send("PRINT");
 	// Acceptance of the test operator
 	if (strstr(received_buffer, "!="))
@@ -200,9 +200,9 @@ void sorting_by_request(char* received_buffer)
 	else
 		opr = '\0';
 
-	parameter = creatingADynamicCharWithContent(strtok(received_buffer, "!=<>"));		  // Receiving the request
+	parameter = creatingADynamicCharWithContent(strtok(received_buffer, "!=<>")); // Receiving the request
 	if (!isTheStringCorrect(parameter))											  // Entered an incorrect title
-		send_("\tERROR!  It seems there was an error entering the parameter;\n"); // print error
+		print_send("\tERROR!  It seems there was an error entering the parameter;\n");
 	else
 	{
 		value = strtok(NULL, "\n"); // receiving the value
@@ -211,79 +211,106 @@ void sorting_by_request(char* received_buffer)
 			if (opr == '!')
 				value++; // Move the pointer to the next cell
 			value = creatingADynamicCharWithContent(value);
-			if (!(strcmp(parameter, "first name")))										  // Checking whether the sorting request is by first name
-				if (!isTheStringCorrect(value))											  // checking the correctness of the name and changing it from lowercase to uppercase
-					print_send("\tERROR! It looks like you entered an invalid first name;\n"); // print error
-				else
-					Bool = test_function(arrayTree[EnFirst]->root, value, opr, arrSortfunc[EnFirst], buffer); // Sending to a sorting function and printing according to the request
-			else if (!(strcmp(parameter, "last name")))												 // Checking whether the sorting request is by last name
-				if (!isTheStringCorrect(value))														 // checking the correctness of the name and changing it from lowercase to uppercase
-					print_send("\tERROR! It looks like you entered an invalid last name;\n");			 // print error
-				else
-					Bool = test_function(arrayTree[EnLast]->root, value, opr, arrSortfunc[EnLast], buffer); // Sending to a sorting function and printing according to the request
-			else if (!(strcmp(parameter, "id")))												   // Checking whether the sorting request is by ID
+			if (!(strcmp(parameter, "first name"))) // Checking whether the sorting request is by first name
+				if (!isTheStringCorrect(value))		// checking the correctness of the name and changing it from lowercase to uppercase
+				{
+					print_send("\tERROR! It looks like you entered an invalid first name;\n");
+					return;
+				}
+				else // Sending to a sorting function and printing according to the request
+					Bool = test_function(arrayTree[EnFirst]->root, value, opr, arrSortfunc[EnFirst], &buffer);
+			else if (!(strcmp(parameter, "last name"))) // Checking whether the sorting request is by last name
+				if (!isTheStringCorrect(value))			// checking the correctness of the name and changing it from lowercase to uppercase
+				{
+					print_send("\tERROR! It looks like you entered an invalid last name;\n");
+					return;
+				}
+				else // Sending to a sorting function and printing according to the request
+					Bool = test_function(arrayTree[EnLast]->root, value, opr, arrSortfunc[EnLast], &buffer);
+			else if (!(strcmp(parameter, "id"))) // Checking whether the sorting request is by ID
 				if (strlen(value) != ID || !isInt(value))
-					print_send("\tERROR! It looks like you entered an invalid id; \n"); // print error
-				else
-					Bool = test_function(arrayTree[EnID]->root, value, opr, arrSortfunc[EnID], buffer); // Sending to a sorting function and printing according to the request
-			else if (!(strcmp(parameter, "phone")))											   // Checking whether the sorting request is by phone
+				{
+					print_send("\tERROR! It looks like you entered an invalid id; \n");
+					return;
+				}
+				else // Sending to a sorting function and printing according to the request
+					Bool = test_function(arrayTree[EnID]->root, value, opr, arrSortfunc[EnID], &buffer);
+			else if (!(strcmp(parameter, "phone"))) // Checking whether the sorting request is by phone
 				if (strlen(value) != PHONE || !isInt(value))
-					print_send("\tERROR! It looks like you entered an invalid phone;\n"); // print error
-				else
-					Bool = test_function(arrayTree[EnPhone]->root, value, opr, arrSortfunc[EnPhone], buffer); // Sending to a sorting function and printing according to the request
+				{
+					print_send("\tERROR! It looks like you entered an invalid phone;\n");
+					return;
+				}
+				else // Sending to a sorting function and printing according to the request
+					Bool = test_function(arrayTree[EnPhone]->root, value, opr, arrSortfunc[EnPhone], &buffer);
 			else if (!(strcmp(parameter, "debt")))
-			{ // Checking whether the sorting request is by debt
-				if (!isNegativeFloat(value))
-					print_send("\tERROR! It looks like you entered an invalid debt;\n"); // print error
+			{
+				if (!isNegativeFloat(value)) // Checking whether the sorting request is by debt
+				{
+					print_send("\tERROR! It looks like you entered an invalid debt;\n");
+					return;
+				}
 				else
 				{
-					float sumDebt = stringConversionToFloat(value);									  // creating a variable to receive the debt from the string
-					Bool = test_function(arrayTree[EnDebt]->root, &sumDebt, opr, arrSortfunc[EnDebt], buffer); // Sending to a sorting function and printing according to the request
+					float sumDebt = stringConversionToFloat(value); // creating a variable to receive the debt from the string
+					// Sending to a sorting function and printing according to the request
+					Bool = test_function(arrayTree[EnDebt]->root, &sumDebt, opr, arrSortfunc[EnDebt], &buffer);
 				}
 			}
 			else if (!(strcmp(parameter, "date")))
-			{												  // Checking whether the sorting request is by date
+			{
 				Date date = creatingANewDateStructure(value); // send to create a date
 				if (!date.day || !date.month || !date.year)
-					print_send("\tERROR! It looks like you entered an invalid date;\n"); // print error
-				else
-					Bool = test_function(arrayTree[EnDate]->root, &date, opr, arrSortfunc[EnDate], buffer); // Sending to a sorting function and printing according to the request
+				{
+					print_send("\tERROR! It looks like you entered an invalid date;\n");
+					return;
+				}
+				else // Sending to a sorting function and printing according to the request
+					Bool = test_function(arrayTree[EnDate]->root, &date, opr, arrSortfunc[EnDate], &buffer);
 			}
 			else
-				print_send("\tERROR! It seems there was an error entering the request;\n"); // print error
+			{
+				print_send("\tERROR! It seems there was an error entering the request;\n");
+				return;
+			}
 		}
 		else
-			print_send("\tERROR! It seems there was an error entering the request;\n"); // print error
-		free(value);															   // Release a value
+		{
+			print_send("\tERROR! It seems there was an error entering the request;\n");
+			return;
+		}
+		free(value); // Release a value
 	}
 
 	if (!Bool)
 	{
-		print_send("\tThere are no debts in the current list;\n"); // Print error
+		print_send("\tThere are no debts in the current list;\n");
 		return;
 	}
 	else
 	{
-		creating_a_string_with_variables(buffer, "\t# =============================================================================================== #\n");
-		creating_a_string_with_variables(buffer, "\t#                                                                                                 #\n");
-		creating_a_string_with_variables(buffer, "\t###################################################################################################\n\n\n");
+		creating_a_string_with_variables(&buffer,
+										 "\t# =============================================================================================== #\
+			\n\t#                                                                                                 #\
+			\n\t###################################################################################################\n\n\n");
 	}
 	free(parameter); // Release a parameter
-	print_send(*buffer);
-	free(*buffer);
-	*buffer = NULL;
-	free(buffer);
-	buffer = NULL;
+	print_send(buffer);
+	if (buffer)
+	{
+		free(buffer);
+		buffer = NULL;
+	}
 }
 
 // printing a buffer from the user to the file
-void adding_client_from_user(ListManager *list, char* received_buffer)
-{			
-	char **send_buffer = (char**)malloc(sizeof(char*));	
+void adding_client_from_user(ListManager *list, char *received_buffer)
+{
+	char **send_buffer = (char **)malloc(sizeof(char *));
 	*send_buffer = NULL;
 	PClient cellNew, temp, prev = NULL;
 	cellNew = create_a_new_cell_from_the_user(received_buffer, send_buffer); // Create a new cell
-	temp = (*list)->head;// creating a pointer to the first cell
+	temp = (*list)->head;													 // creating a pointer to the first cell
 	if (cellNew)
 	{
 		int Comparison = 0; // variable that will contain the comparison between two cells
@@ -315,7 +342,7 @@ void adding_client_from_user(ListManager *list, char* received_buffer)
 					creating_a_string_with_variables(send_buffer, " first ");
 				else if (cellNew->error.comparisonLastName)
 					creating_a_string_with_variables(send_buffer, " last ");
-				deleting_a_cell_from_the_list(&cellNew); 
+				deleting_a_cell_from_the_list(&cellNew);
 				creating_a_string_with_variables(send_buffer, "name you entered does not seem to match the ID you entered;\n");
 				send_client("PRINT");
 				send_client(*send_buffer);
@@ -324,12 +351,13 @@ void adding_client_from_user(ListManager *list, char* received_buffer)
 			else
 			{
 				send_client("OPEN_FILE");
-				char **buffer = (char**)malloc(sizeof(char*));
+				char **buffer = (char **)malloc(sizeof(char *));
 				*buffer = get_recv(); // Receiving a row from the user
 				free(*buffer);
 				*buffer = NULL;
-				creating_a_string_with_variables(buffer, "%s,%s,%s,%s,%.2f,%02d/%02d/%04d\n", cellNew->firstName, cellNew->lastName,
-					  cellNew->id, cellNew->phone, cellNew->debt, cellNew->date.day, cellNew->date.month, cellNew->date.year);
+				creating_a_string_with_variables(buffer, "%s,%s,%s,%s,%.2f,%02d/%02d/%04d\n",
+												 cellNew->firstName, cellNew->lastName, cellNew->id, cellNew->phone,
+												 cellNew->debt, cellNew->date.day, cellNew->date.month, cellNew->date.year);
 				send_client(*buffer);
 				if (Comparison && temp)
 				{										// Checking whether the ID is vequal to one of the existing customers
@@ -343,19 +371,21 @@ void adding_client_from_user(ListManager *list, char* received_buffer)
 						(*list)->head = temp->next;
 					}
 					temp->next = NULL;
-					addingASortedCustomerToTheList(&(*list)->head, temp); // Sending for sorting and adding to the list
+					// Sending for sorting and adding to the list
+					addingASortedCustomerToTheList(&(*list)->head, temp);
 					deleting_a_cell_from_the_list(&cellNew);
 				}
 				else
 				{
-					addingASortedCustomerToTheList(&(*list)->head, cellNew); // Sending for sorting and adding to the list
+					// Sending for sorting and adding to the list
+					addingASortedCustomerToTheList(&(*list)->head, cellNew);
 					nsertingAClientIntoAllSortingTrees(cellNew);
 				}
 				free(*buffer);
 				*buffer = NULL;
-			}			
+			}
 		}
 	}
-	if(received_buffer)
+	if (received_buffer)
 		free(received_buffer);
 }
