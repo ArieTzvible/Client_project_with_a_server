@@ -355,7 +355,7 @@ void adding_client_from_user(ListManager *list, char *received_buffer)
 				*buffer = get_recv(); // Receiving a row from the user
 				free(*buffer);
 				*buffer = NULL;
-				creating_a_string_with_variables(buffer, "%s,%s,%s,%s,%.2f,%02d/%02d/%04d\n",
+				creating_a_string_with_variables(buffer, "\n%s,%s,%s,%s,%.2f,%02d/%02d/%04d",
 												 cellNew->firstName, cellNew->lastName, cellNew->id, cellNew->phone,
 												 cellNew->debt, cellNew->date.day, cellNew->date.month, cellNew->date.year);
 				send_client(*buffer);
