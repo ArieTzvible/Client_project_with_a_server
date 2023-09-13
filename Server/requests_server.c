@@ -5,21 +5,21 @@ PClient create_a_new_cell_from_the_user(char *buffer, char **send_buffer)
 { // Create a new cell from the user
 	if (!buffer)
 		return NULL;						  // Checking that the string is not empty
-	PClient cellNew = initErrorsinAnewCell(); // Creating a new client
+	PClient cellNew = init_errors_in_a_new_cell(); // Creating a new client
 	if (!cellNew)
 		return NULL;												  // Checking that the allocation was successful
 	char *parameter, *value, *strDate = NULL;						  // Declaration of variables that will hold parenter and test value
-	parameter = creatingADynamicCharWithContent(strtok(buffer, "=")); // Accepting the test parameter without spaces
+	parameter = creating_a_dynamic_char_with_content(strtok(buffer, "=")); // Accepting the test parameter without spaces
 	do
 	{
-		value = creatingADynamicCharWithContent(strtok(NULL, ",")); // Receiving the value without profits
+		value = creating_a_dynamic_char_with_content(strtok(NULL, ",")); // Receiving the value without profits
 		if (value)
 		{
-			if (isTheStringCorrect(parameter))
+			if (is_the_string_correct(parameter))
 			{
 				if (!strcmp(parameter, "first name"))
 				{									// testing to which object in the cell we will add
-					if (isTheStringCorrect(value))	// Checking the value of the first name
+					if (is_the_string_correct(value))	// Checking the value of the first name
 						cellNew->firstName = value; // Getting a first name for the new cell
 					if (!(cellNew->firstName))
 					{
@@ -29,7 +29,7 @@ PClient create_a_new_cell_from_the_user(char *buffer, char **send_buffer)
 				}
 				else if (!strcmp(parameter, "last name"))
 				{								   // testing to which object in the cell we will add
-					if (isTheStringCorrect(value)) // Checking the value of the last name
+					if (is_the_string_correct(value)) // Checking the value of the last name
 						cellNew->lastName = value; // Getting a last name for the new cell
 					if (!(cellNew->lastName))
 					{
@@ -39,7 +39,7 @@ PClient create_a_new_cell_from_the_user(char *buffer, char **send_buffer)
 				}
 				else if (!strcmp(parameter, "id"))
 				{ // testing to which object in the cell we will add
-					if (isInt(value) && strlen(value) == ID)
+					if (is_int(value) && strlen(value) == ID)
 					{						 // Checking the value of the ID
 						cellNew->id = value; // Getting a ID for the new cell
 					}
@@ -51,7 +51,7 @@ PClient create_a_new_cell_from_the_user(char *buffer, char **send_buffer)
 				}
 				else if (!strcmp(parameter, "phone"))
 				{ // testing to which object in the cell we will add
-					if (isInt(value) && strlen(value) == PHONE)
+					if (is_int(value) && strlen(value) == PHONE)
 					{							// Checking the value of the phone
 						cellNew->phone = value; // Getting a phone for the new cell
 					}
@@ -63,8 +63,8 @@ PClient create_a_new_cell_from_the_user(char *buffer, char **send_buffer)
 				}
 				else if (!strcmp(parameter, "debt"))
 				{														// testing to which object in the cell we will add
-					if (isNegativeFloat(value))							// Checking the value of the debt
-						cellNew->debt = stringConversionToFloat(value); // Receiving the number for the client
+					if (is_negative_float(value))							// Checking the value of the debt
+						cellNew->debt = string_conversion_to_float(value); // Receiving the number for the client
 					if (!(cellNew->debt))
 						error_printing_and_deleting_a_cell(&cellNew, "\tERROR! It looks like you entered an invalid debt;\n", send_buffer); // printing an error and deleting a cell
 					free(value);																											// Release a value
@@ -87,12 +87,12 @@ PClient create_a_new_cell_from_the_user(char *buffer, char **send_buffer)
 			}
 		}
 		free(parameter); // Release a parameter
-		parameter = creatingADynamicCharWithContent(strtok(NULL, "="));
+		parameter = creating_a_dynamic_char_with_content(strtok(NULL, "="));
 	} while ((parameter != NULL) && (cellNew != NULL));
 
 	if (strDate)
 	{
-		cellNew->date = creatingANewDateStructure(strDate); // Send to create a date
+		cellNew->date = creating_a_new_date_structure(strDate); // Send to create a date
 		if ((!cellNew->date.day || !cellNew->date.month || !cellNew->date.year))
 			error_printing_and_deleting_a_cell(&cellNew, "\tERROR! It looks like you entered an invalid date;\n", send_buffer); // printing an error and deleting a cell
 		free(strDate);
@@ -200,8 +200,8 @@ void sorting_by_request(char *received_buffer)
 	else
 		opr = '\0';
 
-	parameter = creatingADynamicCharWithContent(strtok(received_buffer, "!=<>")); // Receiving the request
-	if (!isTheStringCorrect(parameter))											  // Entered an incorrect title
+	parameter = creating_a_dynamic_char_with_content(strtok(received_buffer, "!=<>")); // Receiving the request
+	if (!is_the_string_correct(parameter))											  // Entered an incorrect title
 		print_send("\tERROR!  It seems there was an error entering the parameter;\n");
 	else
 	{
@@ -210,9 +210,9 @@ void sorting_by_request(char *received_buffer)
 		{
 			if (opr == '!')
 				value++; // Move the pointer to the next cell
-			value = creatingADynamicCharWithContent(value);
+			value = creating_a_dynamic_char_with_content(value);
 			if (!(strcmp(parameter, "first name"))) // Checking whether the sorting request is by first name
-				if (!isTheStringCorrect(value))		// checking the correctness of the name and changing it from lowercase to uppercase
+				if (!is_the_string_correct(value))		// checking the correctness of the name and changing it from lowercase to uppercase
 				{
 					print_send("\tERROR! It looks like you entered an invalid first name;\n");
 					return;
@@ -220,7 +220,7 @@ void sorting_by_request(char *received_buffer)
 				else // Sending to a sorting function and printing according to the request
 					Bool = test_function(arrayTree[EnFirst]->root, value, opr, arrSortfunc[EnFirst], &buffer);
 			else if (!(strcmp(parameter, "last name"))) // Checking whether the sorting request is by last name
-				if (!isTheStringCorrect(value))			// checking the correctness of the name and changing it from lowercase to uppercase
+				if (!is_the_string_correct(value))			// checking the correctness of the name and changing it from lowercase to uppercase
 				{
 					print_send("\tERROR! It looks like you entered an invalid last name;\n");
 					return;
@@ -228,7 +228,7 @@ void sorting_by_request(char *received_buffer)
 				else // Sending to a sorting function and printing according to the request
 					Bool = test_function(arrayTree[EnLast]->root, value, opr, arrSortfunc[EnLast], &buffer);
 			else if (!(strcmp(parameter, "id"))) // Checking whether the sorting request is by ID
-				if (strlen(value) != ID || !isInt(value))
+				if (strlen(value) != ID || !is_int(value))
 				{
 					print_send("\tERROR! It looks like you entered an invalid id; \n");
 					return;
@@ -236,7 +236,7 @@ void sorting_by_request(char *received_buffer)
 				else // Sending to a sorting function and printing according to the request
 					Bool = test_function(arrayTree[EnID]->root, value, opr, arrSortfunc[EnID], &buffer);
 			else if (!(strcmp(parameter, "phone"))) // Checking whether the sorting request is by phone
-				if (strlen(value) != PHONE || !isInt(value))
+				if (strlen(value) != PHONE || !is_int(value))
 				{
 					print_send("\tERROR! It looks like you entered an invalid phone;\n");
 					return;
@@ -245,21 +245,21 @@ void sorting_by_request(char *received_buffer)
 					Bool = test_function(arrayTree[EnPhone]->root, value, opr, arrSortfunc[EnPhone], &buffer);
 			else if (!(strcmp(parameter, "debt")))
 			{
-				if (!isNegativeFloat(value)) // Checking whether the sorting request is by debt
+				if (!is_negative_float(value)) // Checking whether the sorting request is by debt
 				{
 					print_send("\tERROR! It looks like you entered an invalid debt;\n");
 					return;
 				}
 				else
 				{
-					float sumDebt = stringConversionToFloat(value); // creating a variable to receive the debt from the string
+					float sumDebt = string_conversion_to_float(value); // creating a variable to receive the debt from the string
 					// Sending to a sorting function and printing according to the request
 					Bool = test_function(arrayTree[EnDebt]->root, &sumDebt, opr, arrSortfunc[EnDebt], &buffer);
 				}
 			}
 			else if (!(strcmp(parameter, "date")))
 			{
-				Date date = creatingANewDateStructure(value); // send to create a date
+				Date date = creating_a_new_date_structure(value); // send to create a date
 				if (!date.day || !date.month || !date.year)
 				{
 					print_send("\tERROR! It looks like you entered an invalid date;\n");
@@ -322,7 +322,7 @@ void adding_client_from_user(ListManager *list, char *received_buffer)
 		{
 			do
 			{
-				Comparison = comparisonOfCells(&cellNew, &temp);
+				Comparison = comparison_of_cells(&cellNew, &temp);
 				if (Comparison) // Checking whether the ID exists
 					break;
 				prev = temp;
@@ -361,7 +361,7 @@ void adding_client_from_user(ListManager *list, char *received_buffer)
 				send_client(*buffer);
 				if (Comparison && temp)
 				{										// Checking whether the ID is vequal to one of the existing customers
-					cellUpdateInTrees(&cellNew, &temp); // updating the cell and releasing the new cell
+					cell_update_in_trees(&cellNew, &temp); // updating the cell and releasing the new cell
 					if (prev)
 					{
 						prev->next = temp->next;
@@ -372,14 +372,14 @@ void adding_client_from_user(ListManager *list, char *received_buffer)
 					}
 					temp->next = NULL;
 					// Sending for sorting and adding to the list
-					addingASortedCustomerToTheList(&(*list)->head, temp);
+					adding_a_sorted_customer_to_the_list(&(*list)->head, temp);
 					deleting_a_cell_from_the_list(&cellNew);
 				}
 				else
 				{
 					// Sending for sorting and adding to the list
-					addingASortedCustomerToTheList(&(*list)->head, cellNew);
-					nsertingAClientIntoAllSortingTrees(cellNew);
+					adding_a_sorted_customer_to_the_list(&(*list)->head, cellNew);
+					nserting_a_client_into_all_sorting_trees(cellNew);
 				}
 				free(*buffer);
 				*buffer = NULL;

@@ -53,23 +53,23 @@
 //
 #include "HeaderMain.h"
 
-int testingFirstName(void *value, PClient client)
+int testing_first_name(void *value, PClient client)
 {													 // First name check (specific)
 	return strcmp((char *)value, client->firstName); // Comparison of the strings
 }
-int testingLastName(void *value, PClient client)
+int testing_last_name(void *value, PClient client)
 {													// Last name check (specific)
 	return strcmp((char *)value, client->lastName); // Comparison of the strings
 }
-int testingID(void *value, PClient client)
+int testing_ID(void *value, PClient client)
 {											  // ID check (specific)
 	return strcmp((char *)value, client->id); // Comparison of the strings
 }
-int testingPhone(void *value, PClient client)
+int testing_phone(void *value, PClient client)
 {												 // Phone check (specific)
 	return strcmp((char *)value, client->phone); // Comparison of the strings
 }
-int testingDebt(void *value, PClient client)
+int testing_debt(void *value, PClient client)
 { // Debt check (specific)
 	if (*(float *)value < client->debt)
 		return -1;
@@ -77,9 +77,9 @@ int testingDebt(void *value, PClient client)
 		return 1;
 	return 0;
 }
-int testingDate(void *value, PClient client)
+int testing_date(void *value, PClient client)
 {														 // Date check (specific)
-	return comparingDates(*(Date *)value, client->date); // Debt comparison
+	return comparing_dates(*(Date *)value, client->date); // Debt comparison
 }
 
 int main()
@@ -89,10 +89,10 @@ int main()
 	init_server();
 	my_listen();
 
-	crateArrayTreeAndArrayFuncSort();// Sending to create an array of sorting functions
+	crate_array_tree_and_array_func_sort();// Sending to create an array of sorting functions
 	ListManager manager_client_list = init_a_new_list_manager(); // Creating a new manageme structure.
 	create_list_of_customers_from_a_client(manager_client_list);
-	creatingTreesFromLinkedList(manager_client_list);
+	creating_trees_from_linked_list(manager_client_list);
 	printing_debtors_only(manager_client_list->head); // Debtors printing.
 	printing_cells_with_errors(manager_client_list->headError); // Printing the cells with errors
 	print_instructions();
@@ -104,7 +104,7 @@ int main()
 		send_client("your request: ");
 		buffer = get_recv();
 		char *choice = strtok(buffer, " \0");
-		if (isTheStringCorrect(choice))
+		if (is_the_string_correct(choice))
 		{
 			if (!(strncmp(buffer, "select", 6))) // Checks if he asked to sort
 			{

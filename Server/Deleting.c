@@ -84,7 +84,7 @@
 // 		return NULL;
 
 // 	/*Finding a replacement to the node*/
-// 	PNode temp = findingAReplacementCell(*node, val, Enum);
+// 	PNode temp = finding_a_replacement_cell(*node, val, Enum);
 
 // 	/*Deleting node*/
 // 	free(*node);

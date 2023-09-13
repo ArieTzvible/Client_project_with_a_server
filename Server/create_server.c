@@ -30,8 +30,8 @@ void create_list_of_customers_from_a_client(ListManager manager)//creating a lis
 		}
 		temp_buffer = recv_();//send to get a line from the file
 		if (temp_buffer != NULL && strcmp(temp_buffer, "0")) {
-			PClient temp = createNewClientFromFile(temp_buffer);// send to create a new cell
-			testingTheNewCell(manager, &temp);//Testing new cell			
+			PClient temp = create_new_client_from_file(temp_buffer);// send to create a new cell
+			testing_the_new_cell(manager, &temp);//Testing new cell			
 		}
 		send_("0");
 	} while (temp_buffer && (strcmp(temp_buffer, "0")));
@@ -39,20 +39,20 @@ void create_list_of_customers_from_a_client(ListManager manager)//creating a lis
 		free(temp_buffer);
 }
 
-void crateArrayTreeAndArrayFuncSort() 
+void crate_array_tree_and_array_func_sort() 
 {
 	for (int i = 0; i < SIZE_ARRAY; i++) {
-		arrayTree[i] = initRoot();
+		arrayTree[i] = init_root();
 	}
-	arrSortfunc[EnFirst] = testingFirstName;
-	arrSortfunc[EnLast] = testingLastName;
-	arrSortfunc[EnID] = testingID;
-	arrSortfunc[EnPhone] = testingPhone;
-	arrSortfunc[EnDebt] = testingDebt;
-	arrSortfunc[EnDate] = testingDate;
+	arrSortfunc[EnFirst] = testing_first_name;
+	arrSortfunc[EnLast] = testing_last_name;
+	arrSortfunc[EnID] = testing_ID;
+	arrSortfunc[EnPhone] = testing_phone;
+	arrSortfunc[EnDebt] = testing_debt;
+	arrSortfunc[EnDate] = testing_date;
 }
 
-PTree initRoot()
+PTree init_root()
 {
 	/*Creating a variable of type tree*/
 	PTree tree = (PTree)malloc(sizeof(Tree));
@@ -62,7 +62,7 @@ PTree initRoot()
 	return tree;
 }
 
-PNode createNodeTree(PClient client) {
+PNode create_node_tree(PClient client) {
 	/*Creating a variable of type node*/
 	PNode node = (PNode)malloc(sizeof(Node));
 	/*Put the client to the client we received*/
@@ -76,7 +76,7 @@ PNode createNodeTree(PClient client) {
 	return node;
 }
 
-PClient initErrorsinAnewCell() //initialize a new client structure
+PClient init_errors_in_a_new_cell() //initialize a new client structure
 {
 	PClient newClient = (PClient)malloc(sizeof(Client));//Declaration and creation of a new structure
 	if (!newClient)
@@ -108,8 +108,8 @@ PClient initErrorsinAnewCell() //initialize a new client structure
 	return newClient;
 }
 
-PClient creatingADeepCopyOfAClient(PClient curr) {
-	PClient newClient = initErrorsinAnewCell();
+PClient creating_a_deep_copy_of_a_client(PClient curr) {
+	PClient newClient = init_errors_in_a_new_cell();
 	newClient->firstName = strdup(curr->firstName);
 	newClient->lastName = strdup(curr->lastName);
 	newClient->id = strdup(curr->id);
@@ -127,15 +127,15 @@ PClient creatingADeepCopyOfAClient(PClient curr) {
 	return newClient;
 }
 
-PClient createNewClientFromFile(char* line) {//creating a new customer from the file
+PClient create_new_client_from_file(char* line) {//creating a new customer from the file
 	if (!*line) {
 		free(line);
 		return NULL;
 	}
-	PClient temp = initErrorsinAnewCell();//initialize a new client structure
+	PClient temp = init_errors_in_a_new_cell();//initialize a new client structure
 	void (*arr[6])(PClient curr, char* string) = {
-		fillingInAFirstName, fillingInALastName, fillingInAID,
-		fillingInAPhone, fillingInADebt, fillingInADate };
+		filling_in_a_first_name, filling_in_a_last_name, fillin_in_a_ID,
+		filling_in_a_phone, filling_in_a_debt, filling_in_a_date };
 
 	int i = 0;
 	char* token;
@@ -155,28 +155,28 @@ PClient createNewClientFromFile(char* line) {//creating a new customer from the 
 	return temp;
 }
 
-Date creatingANewDateStructure(char* date) {//create date
+Date creating_a_new_date_structure(char* date) {//create date
 	Date temp = { 0 };//Creating a date structure type variable
 	if (!date) return temp;//check that the received string contains characters
 	char* strDate = date;//Declaration of a variable holding the resulting string
 	if (((int)strlen(strDate) == 10) && (strDate[2] == '/' && strDate[5] == '/')) {//Is the date correct.
 		char* token;
 		token = strtok(date, "/");//accepting up to a comma (a cell in the file) and accepting it into a pointer
-		if (isInt(token)) {//Is the number correct?
+		if (is_int(token)) {//Is the number correct?
 			int day = atoi(token);//Convert string to number
 			if (day <= DAY && day > 0) {//Is the number in the normal range
 				temp.day = day;// Application of the number in the designated cell
 			}
 		}
 		token = strtok(NULL, "/");
-		if (isInt(token)) {//Is the number correct?
+		if (is_int(token)) {//Is the number correct?
 			int month = atoi(token);//Convert string to number
 			if (month <= MONTH && month > 0) {//Is the number in the normal range
 				temp.month = month;// Application of the number in the designated cell
 			}
 		}
 		token = strtok(NULL, "\n");
-		if (isInt(token)) {//Is the number correct?
+		if (is_int(token)) {//Is the number correct?
 			int year = atoi(token);//Convert string to number
 			if (year <= MAX_YEAR && year > MIN_YEAR) {//Is the number in the normal range
 				temp.year = year;// Application of the number in the designated cell
@@ -186,7 +186,7 @@ Date creatingANewDateStructure(char* date) {//create date
 	return temp;//Return new cell
 }
 
-void creatingTreesFromLinkedList(ListManager manager) {
+void creating_trees_from_linked_list(ListManager manager) {
 
 	/*Check if the list is empty*/
 	if ((!manager) || (!manager->head))
@@ -196,35 +196,35 @@ void creatingTreesFromLinkedList(ListManager manager) {
 	/*A loop that goes over the list and sends to create a sorted tree*/
 	while (temp) {
 		/*Sending a client to enter in all sorting trees*/
-		nsertingAClientIntoAllSortingTrees(temp);
+		nserting_a_client_into_all_sorting_trees(temp);
 		/*Move the pointer to the next cell*/
 		temp = temp->next;
 	}
 }
 
-void nsertingAClientIntoAllSortingTrees(PClient client) {
+void nserting_a_client_into_all_sorting_trees(PClient client) {
 	/*Sending to the function to insert a cell in the first name tree*/
-	arrayTree[EnFirst]->root = incomeForTheTree(arrayTree[EnFirst]->root, client, client->firstName, arrSortfunc[EnFirst]);
+	arrayTree[EnFirst]->root = income_for_the_tree(arrayTree[EnFirst]->root, client, client->firstName, arrSortfunc[EnFirst]);
 	/*Sending to the function to insert a cell in the last name tree*/
-	arrayTree[EnLast]->root = incomeForTheTree(arrayTree[EnLast]->root, client, client->lastName, arrSortfunc[EnLast]);
+	arrayTree[EnLast]->root = income_for_the_tree(arrayTree[EnLast]->root, client, client->lastName, arrSortfunc[EnLast]);
 	/*Sending to the function to insert a cell in the ID tree*/
-	arrayTree[EnID]->root = incomeForTheTree(arrayTree[EnID]->root, client, client->id, arrSortfunc[EnID]);
+	arrayTree[EnID]->root = income_for_the_tree(arrayTree[EnID]->root, client, client->id, arrSortfunc[EnID]);
 	/*Sending to the function to insert a cell in the phone tree*/
-	arrayTree[EnPhone]->root = incomeForTheTree(arrayTree[EnPhone]->root, client, client->phone, arrSortfunc[EnPhone]);
+	arrayTree[EnPhone]->root = income_for_the_tree(arrayTree[EnPhone]->root, client, client->phone, arrSortfunc[EnPhone]);
 	/*Sending to the function to insert a cell in the debt tree*/
-	arrayTree[EnDebt]->root = incomeForTheTree(arrayTree[EnDebt]->root, client, &(client->debt), arrSortfunc[EnDebt]);
+	arrayTree[EnDebt]->root = income_for_the_tree(arrayTree[EnDebt]->root, client, &(client->debt), arrSortfunc[EnDebt]);
 	/*Sending to the function to insert a cell in the date tree*/
-	arrayTree[EnDate]->root = incomeForTheTree(arrayTree[EnDate]->root, client, &(client->date), arrSortfunc[EnDate]);
+	arrayTree[EnDate]->root = income_for_the_tree(arrayTree[EnDate]->root, client, &(client->date), arrSortfunc[EnDate]);
 }
 
-void addToHeadTheList(PClient* head, PClient newCell)
+void add_to_head_the_list(PClient* head, PClient newCell)
 {
 	newCell->next = *head;
 	*head = newCell;
 }
 
 /*A function for sorting and adding to the list*/
-void addingASortedCustomerToTheList(PClient* head, PClient newCell)
+void adding_a_sorted_customer_to_the_list(PClient* head, PClient newCell)
 {
 	if (!newCell) return;
 	if (*head == NULL || newCell->debt <= (*head)->debt) //Checking whether the first cell is empty
@@ -248,35 +248,35 @@ void addingASortedCustomerToTheList(PClient* head, PClient newCell)
 }
 
 /*Filling in the details in the client*/
-void fillingInAFirstName(PClient curr, char* string) {
+void filling_in_a_first_name(PClient curr, char* string) {
 	if ((!curr) || (!string)) return;
-	curr->firstName = creatingADynamicCharWithContent(string);//Getting first name
+	curr->firstName = creating_a_dynamic_char_with_content(string);//Getting first name
 }
-void fillingInALastName(PClient curr, char* string) {
+void filling_in_a_last_name(PClient curr, char* string) {
 	if ((!curr) || (!string)) return;
-	curr->lastName = creatingADynamicCharWithContent(string);//Getting last name 
+	curr->lastName = creating_a_dynamic_char_with_content(string);//Getting last name 
 }
-void fillingInAID(PClient curr, char* string) {
+void fillin_in_a_ID(PClient curr, char* string) {
 	if ((!curr) || (!string)) return;
-	curr->id = creatingADynamicCharWithContent(string);//Getting ID
+	curr->id = creating_a_dynamic_char_with_content(string);//Getting ID
 }
-void fillingInAPhone(PClient curr, char* string) {
+void filling_in_a_phone(PClient curr, char* string) {
 	if ((!curr) || (!string)) return;
-	curr->phone = creatingADynamicCharWithContent(string);//Getting phone
+	curr->phone = creating_a_dynamic_char_with_content(string);//Getting phone
 }
-void fillingInADebt(PClient curr, char* string) {
+void filling_in_a_debt(PClient curr, char* string) {
 	if ((!curr) || (!string)) return;
 	char* strDebt;//Creating a variable for a debt check without the minus
-	strDebt = creatingADynamicCharWithContent(string);//Getting debt
-	if (strDebt && isNegativeFloat(strDebt))
-		curr->debt = stringConversionToFloat(string);//Receiving the number for the client
+	strDebt = creating_a_dynamic_char_with_content(string);//Getting debt
+	if (strDebt && is_negative_float(strDebt))
+		curr->debt = string_conversion_to_float(string);//Receiving the number for the client
 	else
 		curr->error.ERROR = curr->error.debt = 1;//error in receiving the debt
 	free(strDebt);
 }
-void fillingInADate(PClient curr, char* string) {
+void filling_in_a_date(PClient curr, char* string) {
 	if ((!curr) || (!string)) return;
-	curr->date = creatingANewDateStructure(string);//send to create a date
+	curr->date = creating_a_new_date_structure(string);//send to create a date
 	if ((!curr->date.day) && (!curr->date.month) && (!curr->date.year))
 		curr->error.lacksValues = curr->error.ERROR = 1;//Missing values
 	else if (!(curr->date.day && (curr->date.month) && curr->date.year))// check that all date values exist
@@ -284,7 +284,7 @@ void fillingInADate(PClient curr, char* string) {
 }
 
 /*Finding the place to insert the tree*/
-PNode incomeForTheTree(PNode root, PClient client, void* value, int (*sort)(void*, PClient)) {
+PNode income_for_the_tree(PNode root, PClient client, void* value, int (*sort)(void*, PClient)) {
 	int test;/*Create a variable for the test result*/
 
 	/*Check if the client is empty*/
@@ -294,7 +294,7 @@ PNode incomeForTheTree(PNode root, PClient client, void* value, int (*sort)(void
 	/*Checking whether the root is valuable*/
 	if (!root) {
 		/*Creating new node and Returning a value in the root*/
-		return createNodeTree(client);
+		return create_node_tree(client);
 	}
 
 	/*Comparison in a specific function and assignment to the test variable*/
@@ -311,7 +311,7 @@ PNode incomeForTheTree(PNode root, PClient client, void* value, int (*sort)(void
 			temp = temp->nextLike;/*Moving the pointer to the next similar cell*/
 
 		/*Place the cell in the following similar pointer*/
-		temp->nextLike = createNodeTree(client);
+		temp->nextLike = create_node_tree(client);
 
 		/*Place the cell in the parent pointer to the temp cell*/
 		temp->nextLike->father = temp;
@@ -322,7 +322,7 @@ PNode incomeForTheTree(PNode root, PClient client, void* value, int (*sort)(void
 	/*If the current cell is greater than the cell temp*/
 	else if (test > 0) {
 		/*sending the right tree*/
-		root->right = incomeForTheTree(root->right, client, value, sort);
+		root->right = income_for_the_tree(root->right, client, value, sort);
 		root->right->father = root;
 	}
 
@@ -330,15 +330,15 @@ PNode incomeForTheTree(PNode root, PClient client, void* value, int (*sort)(void
 	/*Checking whether the current cell is smaller than the temp cell*/
 	else if (test < 0) {
 		/*sending the left tree*/
-		root->left = incomeForTheTree(root->left, client, value, sort);
+		root->left = income_for_the_tree(root->left, client, value, sort);
 		root->left->father = root;
 	}
 
-	return inspectionandRepairOfAVLTree(root, value, sort);
+	return inspection_and_repair_of_AVL_tree(root, value, sort);
 
 
 }
-PNode findingandApplyingASimilarCell(PNode node) {
+PNode finding_and_applying_a_similar_cell(PNode node) {
 
 	PNode temp = NULL;
 
@@ -351,7 +351,7 @@ PNode findingandApplyingASimilarCell(PNode node) {
 
 	return temp;
 }
-PNode findingandApplyingASubsequentCell(PNode node, void* val, int Enum) {
+PNode finding_and_applying_a_subsequent_cell(PNode node, void* val, int Enum) {
 	PNode temp = NULL;
 
 	if (node->right) {
@@ -373,6 +373,6 @@ PNode findingandApplyingASubsequentCell(PNode node, void* val, int Enum) {
 		temp->father = node->father;
 	}
 
-	return inspectionandRepairOfAVLTree(temp, val, arrSortfunc[Enum]);
+	return inspection_and_repair_of_AVL_tree(temp, val, arrSortfunc[Enum]);
 
 }

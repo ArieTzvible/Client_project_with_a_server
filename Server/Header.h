@@ -30,19 +30,22 @@
 /*The length of the array is the same
 as the number of variables in the client*/
 #define SIZE_ARRAY 6
+
 /*Creating an ENUM for the client values*/
-enum treeEnum {
+enum treeEnum 
+{
 	EnFirst, EnLast, EnID, EnPhone, EnDebt, EnDate
 };
 
-
-typedef struct Date {//Date structure.
+typedef struct Date 
+{
 	unsigned int day : 6;
 	unsigned int month : 4;
 	unsigned int year : 12;
 }Date;
 
-typedef struct Error {//Client error checking structure
+typedef struct Error 
+{
 	unsigned int ERROR : 1;//Checking for errors.
 	unsigned int firstName : 1;//Error getting first name.
 	unsigned int lastName : 1;//Error getting last name
@@ -55,7 +58,8 @@ typedef struct Error {//Client error checking structure
 	unsigned int comparisonLastName : 1;//Error last name does not match ID.
 }Error;
 
-typedef struct Client {//Client structure.
+typedef struct Client 
+{
 	char* firstName;
 	char* lastName;
 	char* id;
@@ -66,25 +70,23 @@ typedef struct Client {//Client structure.
 	Error error;//Errors by error structure
 }Client, * PClient;
 
-typedef struct List {//List manager structure
+typedef struct List 
+{
 	PClient head;//The head list 
 	PClient headError;//The head errors list
 }List, * ListManager;
 
-typedef struct node {
+typedef struct node 
+{
 	PClient client;
 	struct node* father;
 	struct node* left, * right;
 	struct node* nextLike;
 }Node, * PNode;
 
-typedef struct tree {
+typedef struct tree 
+{
 	PNode root;
 }Tree, * PTree;
-
-
-
-
-
 
 #endif

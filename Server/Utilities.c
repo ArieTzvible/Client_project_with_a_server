@@ -1,45 +1,45 @@
 
 #include "HeaderUtilities.h"
 
-int isNum(char ch) {
+int is_num(char ch) {
 	if (ch >= '0' && ch <= '9')
 		return 1;
 	return 0;
 }
 
-int isInt(char* num) {//Checking the correctness of the int in the string
+int is_int(char* num) {//Checking the correctness of the int in the string
 	if (!num) return 0;
 	int length = strlen(num);
 	for (int i = 0; i < length; i++)
-		if (!isNum(num[i]))
+		if (!is_num(num[i]))
 			return 0;
 	return 1;
 }
 
-int isFloat(char* num) {//Checking the correctness of the float in the string
+int is_float(char* num) {//Checking the correctness of the float in the string
 	if (!num) return 0;
 	int length = strlen(num);
 	for (int i = 0; i < length; i++)
-		if ((num[i] != '.') && (!isNum(num[i])))
+		if ((num[i] != '.') && (!is_num(num[i])))
 			return 0;
 	return 1;
 }
 
-int isNegativeFloat(char* num) {
+int is_negative_float(char* num) {
 	if (*num == '-')
-		return isFloat(num + sizeof(char));
+		return is_float(num + sizeof(char));
 	else
-		return isFloat(num);
+		return is_float(num);
 }
 
-int isNegativeInt(char* num) {
+int is_negative_int(char* num) {
 	if (*num == '-')
-		return isInt(num + sizeof(char));
+		return is_int(num + sizeof(char));
 	else
-		return isInt(num);
+		return is_int(num);
 }
 
-int isLetter(char* ch) {
+int is_letter(char* ch) {
 	if ((*ch < 'a') || (*ch > 'z')) {//Checking that the character is a letter
 		if ((*ch < 'A') || (*ch > 'Z')) //Checking and converting an uppercase letter to lowercase
 			return 0;
@@ -48,24 +48,24 @@ int isLetter(char* ch) {
 	return 1;
 }
 
-int isTheStringCorrect(char* string) {//Checking the correctness of the letters and changing uppercase to lowercase letters
+int is_the_string_correct(char* string) {//Checking the correctness of the letters and changing uppercase to lowercase letters
 	char* tempStr = string;
 	while ((tempStr) && (*tempStr != '\0') && (*tempStr != '\n')) {
 		if (*tempStr != ' ')//Skipping profits
-			if (!isLetter(tempStr))
+			if (!is_letter(tempStr))
 				return 0;
 		tempStr++;
 	}
 	return 1;
 }
 
-float stringConversionToFloat(char* strFloat) {
+float string_conversion_to_float(char* strFloat) {
 	float debt1 = 100 * (float)atof(strFloat);
 	int debt2 = (int)debt1;//Multiply the debt by one hundred
 	return debt2 / (float)100;//Returning the debt with two decimal digits
 }
 
-char* GettingLine(FILE* file) {//getting a complete line from the file
+char* getting_line(FILE* file) {//getting a complete line from the file
 	char* input = NULL;//statement about a pointer to a row that the user entered
 	char string[200];//Declaration of a variable
 	fgets(string, 200, file);//Getting a string from the file
@@ -118,7 +118,7 @@ char* GettingLine(FILE* file) {//getting a complete line from the file
 	return input;
 }
 
-char* creatingADynamicCharWithContent(char* string) {//Creating a dynamic variable with content
+char* creating_a_dynamic_char_with_content(char* string) {//Creating a dynamic variable with content
 	if (!string) return NULL;//testing that we received a value
 	while (*string == ' ' || *string == '\t') string++;//skipping all spaces before the string
 	int i = (int)strlen(string) - 1;//creating a variable of the length of the string
@@ -137,9 +137,9 @@ char* creatingADynamicCharWithContent(char* string) {//Creating a dynamic variab
 	return temp;
 }
 
-char* getNewFileName(char* extension) {//Requesting another file name
+char* get_new_file_name(char* extension) {//Requesting another file name
 	printf("\n\tEnter a file name: ");
-	char* string = GettingLine(stdin);//getting a line from the user includes creating a dynamic string
+	char* string = getting_line(stdin);//getting a line from the user includes creating a dynamic string
 	if (strcmp((string + (strlen(string) - strlen(extension))), extension)) {// check that there is no file name at the end(CSV)		
 		char* str = (char*)malloc((strlen(string) + strlen(extension) + 1) * sizeof(char));//creating a string that will also contain the document extension
 		if (!str){//testing whether the allocation was successful

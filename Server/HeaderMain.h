@@ -10,15 +10,13 @@
 #include "HeaderTest.h"
 #include "HeaderRequests.h"
 #include "Globals.h"
-
-/*server*/
 #include "server_manager.h"
 
-int testingFirstName(void* value, PClient client);//First name check (specific)
-int testingLastName(void* value, PClient client);//Last name check (specific)
-int testingID(void* value, PClient client);//ID check (specific)
-int testingPhone(void* value, PClient client);//Phone check (specific)
-int testingDebt(void* value, PClient client);//Debt check (specific)
-int testingDate(void* value, PClient client);//Date check (specific)
+int testing_first_name(void* value, PClient client);//First name check (specific)
+int testing_last_name(void* value, PClient client);//Last name check (specific)
+int testing_ID(void* value, PClient client);//ID check (specific)
+int testing_phone(void* value, PClient client);//Phone check (specific)
+int testing_debt(void* value, PClient client);//Debt check (specific)
+int testing_date(void* value, PClient client);//Date check (specific)
 
 #endif
