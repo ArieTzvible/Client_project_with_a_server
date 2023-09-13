@@ -1,5 +1,7 @@
 
-#include "client_manager.h"
+#include "ClientManager.h"
+
+int sock;
 
 void init_client()
 {
@@ -27,7 +29,6 @@ void init_client()
     char buffer[50] = {0};
     recv(sock, buffer, sizeof(buffer), 0);
     printf("Server: %s\n", buffer);
-
 }
 
 void send_(char *buffer)
@@ -47,46 +48,46 @@ void print_from_recv()
         }
 
         buffer = recv_();
-        if(!strcmp(buffer, "0"))
-        printf("%s", buffer);
+        if (!strcmp(buffer, "0"))
+            printf("%s", buffer);
     } while (!strcmp(buffer, "0"));
     if (buffer)
         free(buffer);
     buffer = NULL;
 }
 
-void print_send(char* buffer)
+void print_send(char *buffer)
 {
     send_(buffer);
-    char* trash = recv_();
-    if(trash)
+    char *trash = recv_();
+    if (trash)
         free(trash);
 }
 
 void print_recv()
 {
-    char* buffer = recv_();
-	printf("%s\n", buffer);
-    if(buffer)
+    char *buffer = recv_();
+    printf("%s\n", buffer);
+    if (buffer)
     {
-    	free(buffer);
-	    buffer = NULL;
+        free(buffer);
+        buffer = NULL;
     }
-	send_("0");
+    send_("0");
 }
 
-char* get_recv()
+char *get_recv()
 {
-    char* buffer = recv_();
-	send_("0");
+    char *buffer = recv_();
+    send_("0");
     return buffer;
 }
 
-void send_server(char* buffer)
+void send_server(char *buffer)
 {
     send_(buffer);
-    char* trash = recv_();
-    if(trash)
+    char *trash = recv_();
+    if (trash)
         free(trash);
     trash = NULL;
 }
@@ -117,7 +118,7 @@ char *recv_()
                 {
                     printf("Not enough memory\n");
                     free(buffer); // Free the previously allocated buffer
-                    return NULL; // Return NULL to indicate an error
+                    return NULL;  // Return NULL to indicate an error
                 }
             }
             else

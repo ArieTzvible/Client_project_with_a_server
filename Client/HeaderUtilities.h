@@ -1,30 +1,12 @@
-
 #pragma once
 
 #ifndef HeaderUtilities
 #define HeaderUtilities
-#define CHUNK 10
 
-#include "Header.h"
+#include "ClientManager.h"
 
-int isNum(char ch);
-int isInt(char* num);//Checking the correctness of the int in the string
-int isFloat(char* num);//Checking the correctness of the float in the string
-int isNegativeInt(char* num);
-int isNegativeFloat(char* num);
-int isLetter(char* ch);
-int isTheStringCorrect(char* string);//Checking the correctness of the letters and changing uppercase to lowercase letters
-float stringConversionToFloat(char* strFloat);//Convert a string to a sum with only two digits after the dot
-char* GettingLine(FILE* file);//getting a complete line from the file
-char* creatingADynamicCharWithContent(char* string);//Creating a dynamic variable with content
-char* getNewFileName(char* extension);//Requesting another file name
-
-
-
-
-/*Server&Client*/
 char* getting_line(FILE* file);//getting a complete line from the file
-char* get_new_file_Name(char* extension);//Requesting another file name
-
+char* get_new_file_name(char* extension);//Requesting another file name
+void sending_line_to_a_server(FILE* file);
 
 #endif

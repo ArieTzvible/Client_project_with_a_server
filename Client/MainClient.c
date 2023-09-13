@@ -41,7 +41,7 @@
 // 4: To exit the program and finish, enter "exit".
 // The program will release the list and close the program.
 //
-#include "HeaderMain.h"
+#include "HeaderUtilities.h"
 
 int main()
 {
@@ -62,7 +62,7 @@ int main()
 		if (file_name_dynamic)
 			free(file_name);
 		// Sending to the function of receiving a name from the user (it is not necessary to insert CSV).
-		file_name = get_new_file_Name(FILE_NAME_EXTENSION);
+		file_name = get_new_file_name(FILE_NAME_EXTENSION);
 		file_name_dynamic = 1; // Checking whether we received a dynamic string
 	}
 	/************/
@@ -77,7 +77,7 @@ int main()
 	do
 	{
 		print_recv();
-		line = GettingLine(stdin);
+		line = getting_line(stdin);
 		send_server(line);
 
 		if (buffer)
@@ -90,7 +90,7 @@ int main()
 			{
 				if (file_name_dynamic)
 					free(file_name);
-				file_name = getNewFileName(FILE_NAME_EXTENSION);
+				file_name = get_new_file_name(FILE_NAME_EXTENSION);
 				file_name_dynamic = 1; // Checking whether we received a dynamic string
 			}
 			free(buffer);
