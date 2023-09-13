@@ -6,7 +6,7 @@
 #define CHUNK 10
 
 #include "Header.h"
-#include "server_manager.h"
+#include "ServerManager.h"
 
 int is_num(char ch);
 int is_int(char* num);//Checking the correctness of the int in the string

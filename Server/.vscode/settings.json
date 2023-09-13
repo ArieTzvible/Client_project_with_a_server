@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "type_traits": "c",
-        "server_manager.h": "c"
+        "server_manager.h": "c",
+        "creatingmanager.h": "c"
     }
 }

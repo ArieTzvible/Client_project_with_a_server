@@ -6,7 +6,7 @@
 
 #include "Header.h"
 #include "Globals.h"
-#include"server_manager.h"
+#include"ServerManager.h"
 void print_instructions();//Printing instructions for the program.
 void print_table_head(char** buffer, char* print);//Creating a printable table header
 void print_cell(PClient cell, char** buffer);//Single client printing

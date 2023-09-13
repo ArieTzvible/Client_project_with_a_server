@@ -7,7 +7,7 @@
 #include "HeaderMain.h"
 #include "HeaderTree.h"
 #include "Globals.h"
-#include "server_manager.h"
+#include "ServerManager.h"
 #include "CreatingManager.h"
 
 /*Creating a new client from the user*/
